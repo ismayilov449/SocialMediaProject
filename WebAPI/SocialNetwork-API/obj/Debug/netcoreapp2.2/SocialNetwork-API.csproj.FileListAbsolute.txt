@@ -1,0 +1,16 @@
+C:\Users\Rufat\source\repos\SocialNetwork-API\SocialNetwork-API\bin\Debug\netcoreapp2.2\appsettings.Development.json
+C:\Users\Rufat\source\repos\SocialNetwork-API\SocialNetwork-API\bin\Debug\netcoreapp2.2\appsettings.json
+C:\Users\Rufat\source\repos\SocialNetwork-API\SocialNetwork-API\bin\Debug\netcoreapp2.2\Properties\launchSettings.json
+C:\Users\Rufat\source\repos\SocialNetwork-API\SocialNetwork-API\bin\Debug\netcoreapp2.2\SocialNetwork-API.deps.json
+C:\Users\Rufat\source\repos\SocialNetwork-API\SocialNetwork-API\bin\Debug\netcoreapp2.2\SocialNetwork-API.runtimeconfig.json
+C:\Users\Rufat\source\repos\SocialNetwork-API\SocialNetwork-API\bin\Debug\netcoreapp2.2\SocialNetwork-API.runtimeconfig.dev.json
+C:\Users\Rufat\source\repos\SocialNetwork-API\SocialNetwork-API\bin\Debug\netcoreapp2.2\SocialNetwork-API.dll
+C:\Users\Rufat\source\repos\SocialNetwork-API\SocialNetwork-API\bin\Debug\netcoreapp2.2\SocialNetwork-API.pdb
+C:\Users\Rufat\source\repos\SocialNetwork-API\SocialNetwork-API\obj\Debug\netcoreapp2.2\SocialNetwork-API.csprojAssemblyReference.cache
+C:\Users\Rufat\source\repos\SocialNetwork-API\SocialNetwork-API\obj\Debug\netcoreapp2.2\SocialNetwork-API.RazorAssemblyInfo.cache
+C:\Users\Rufat\source\repos\SocialNetwork-API\SocialNetwork-API\obj\Debug\netcoreapp2.2\SocialNetwork-API.RazorAssemblyInfo.cs
+C:\Users\Rufat\source\repos\SocialNetwork-API\SocialNetwork-API\obj\Debug\netcoreapp2.2\SocialNetwork-API.AssemblyInfoInputs.cache
+C:\Users\Rufat\source\repos\SocialNetwork-API\SocialNetwork-API\obj\Debug\netcoreapp2.2\SocialNetwork-API.AssemblyInfo.cs
+C:\Users\Rufat\source\repos\SocialNetwork-API\SocialNetwork-API\obj\Debug\netcoreapp2.2\SocialNetwork-API.RazorTargetAssemblyInfo.cache
+C:\Users\Rufat\source\repos\SocialNetwork-API\SocialNetwork-API\obj\Debug\netcoreapp2.2\SocialNetwork-API.dll
+C:\Users\Rufat\source\repos\SocialNetwork-API\SocialNetwork-API\obj\Debug\netcoreapp2.2\SocialNetwork-API.pdb
