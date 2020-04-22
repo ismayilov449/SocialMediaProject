@@ -76,6 +76,7 @@ namespace SocialNetwork_API
             .AllowCredentials());
 
             app.UseAuthentication();
+            app.UseSpaStaticFiles();
             app.UseMvc();
         }
     }

@@ -12,9 +12,9 @@ namespace SocialNetwork_API.Dtos
 
         public string Username { get; set; }
 
-        public Image UserImgUrl { get; set; }
+        public string UserImgUrl { get; set; }
 
-        public Image ImgUrl { get; set; }
+        public string ImgUrl { get; set; }
 
         public string Text { get; set; }
 
