@@ -46,6 +46,11 @@ namespace SocialNetwork_API
             });
             services.AddAutoMapper(typeof(Startup));
             services.AddCors();
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "API", Version = "v1" });
+            });
+
             services.AddScoped<IUnitOfWork, EfUnitOfWork>();
             services.AddScoped<IPostRepository, EfPostRepository>();
             services.AddScoped<IAuthRepository, EfAuthRepository>();
@@ -74,9 +79,14 @@ namespace SocialNetwork_API
             .AllowAnyMethod()
             .AllowAnyOrigin()
             .AllowCredentials());
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("v1/swagger.json", "API v1");
+            });
 
             app.UseAuthentication();
-            app.UseSpaStaticFiles();
+            app.UseStaticFiles();
             app.UseMvc();
         }
     }

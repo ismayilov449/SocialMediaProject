@@ -46,8 +46,8 @@ namespace SocialNetwork_API.Controllers
         }
 
         [HttpPost]
-        [Route("addpost")]
-        public ActionResult AddPost([FromBody]Post post)
+        [Route("sharepost")]
+        public ActionResult SharePost([FromBody]Post post)
         {
 
             //var currUploadImageDto = CloudinaryMethods.UploadImageToCloudinary(uploadImageDto);
