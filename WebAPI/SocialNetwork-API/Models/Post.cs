@@ -12,6 +12,7 @@ namespace SocialNetwork_API.Models
 
         [Required]
         public int UserId { get; set; }
+
         public User User { get; set; }
 
         public Image Photo { get; set; }
