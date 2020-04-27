@@ -1,4 +1,5 @@
-﻿using SocialNetwork_API.Models;
+﻿using MongoDB.Bson;
+using SocialNetwork_API.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,6 @@ namespace SocialNetwork_API.DAL.Abstract
 {
     public interface IPostRepository : IGenericRepository<Post>
     {
-
+        List<Post> GetPostsByUserId(ObjectId objectId);
     }
 }

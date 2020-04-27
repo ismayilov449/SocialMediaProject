@@ -19,6 +19,24 @@ namespace SocialNetwork_API.DAL.Concrete.MongoDB
             _users = db.GetCollection<User>("Users");
         }
 
+        public void UpdateUser(User user, ObjectId id)
+        {
+
+            _users.FindOneAndUpdate<User>(
+                Builders<User>.Filter.Eq("Id", id),
+                Builders<User>.Update.
+                Set("Username", user.Username).
+                Set("ImgId", user.ImgId).
+                Set("Posts", user.Posts).
+                Set("Likes", user.Likes));
+
+        }
+
+        public User GetUser(ObjectId objectId)
+        {
+            return _users.Find(x => x.Id == objectId).FirstOrDefault();
+        }
+
         public ObjectId GetUserId(string username)
         {
             return _users.Find(x => x.Username == username).FirstOrDefault().Id;

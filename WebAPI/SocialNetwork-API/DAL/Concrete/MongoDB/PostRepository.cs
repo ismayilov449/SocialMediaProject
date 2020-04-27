@@ -20,5 +20,11 @@ namespace SocialNetwork_API.DAL.Concrete.MongoDB
             var db = ConnectDB.Connect(settings);
             _posts = db.GetCollection<Post>("Posts");
         }
+
+        public List<Post> GetPostsByUserId(ObjectId objectId)
+        {
+            var posts = _posts.Find(x => x.UserId == objectId).ToList();
+            return posts;
+        }
     }
 }

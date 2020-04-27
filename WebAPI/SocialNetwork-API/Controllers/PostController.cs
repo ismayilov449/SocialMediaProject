@@ -39,20 +39,17 @@ namespace SocialNetwork_API.Controllers
         public ActionResult SharePost([FromBody]Post post)
         {
 
-            //var currUploadImageDto = CloudinaryMethods.UploadImageToCloudinary(uploadImageDto);
+            var currUserId = _uow.Users.GetUserId(User.Identity.Name);
+            var currUser = _uow.Users.GetUser(currUserId);
 
-            //if (currUploadImageDto.File.Length > 0)
-            //{
-            //    post.Photo = new Image();
-            //    post.Photo.PublicId = currUploadImageDto.PublicId;
-            //    post.Photo.Url = currUploadImageDto.Url;
-            //}
-             
-
-            post.UserId = _uow.Users.GetUserId(User.Identity.Name);
+            post.UserId = currUserId;
             post.SharedTime = DateTime.UtcNow;
             _uow.Posts.Add(post);
+            
 
+            currUser.Posts = _uow.Posts.GetPostsByUserId(currUserId).Select(x => x.Id).ToList();
+            _uow.Users.UpdateUser(currUser,currUserId);
+             
             return Ok(post);
         }
 
