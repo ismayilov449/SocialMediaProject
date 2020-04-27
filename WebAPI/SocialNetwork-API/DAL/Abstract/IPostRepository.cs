@@ -8,5 +8,6 @@ namespace SocialNetwork_API.DAL.Abstract
 {
     public interface IPostRepository : IGenericRepository<Post>
     {
+
     }
 }

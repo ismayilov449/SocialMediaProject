@@ -1,19 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using AutoMapper;
-using CloudinaryDotNet;
-using CloudinaryDotNet.Actions;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using SocialNetwork_API.DAL;
+using Microsoft.Extensions.Configuration;
+using MongoDB.Bson;
 using SocialNetwork_API.DAL.Abstract;
-using SocialNetwork_API.Dtos;
-using SocialNetwork_API.Helpers;
 using SocialNetwork_API.Models;
 
 namespace SocialNetwork_API.Controllers
@@ -22,27 +13,25 @@ namespace SocialNetwork_API.Controllers
     [ApiController]
     public class PostController : ControllerBase
     {
-        private readonly IUnitOfWork _uow;
-        private readonly IMapper _mapper;
-        private readonly DataContext _context;
+        private IUnitOfWork _uow;
+        private IConfiguration _configuration;
 
-        public PostController(DataContext context, IUnitOfWork uow, IMapper mapper)
+        public PostController(IUnitOfWork uow, IConfiguration configuration)
         {
             _uow = uow;
-            _mapper = mapper;
-            _context = context;
+            _configuration = configuration;
         }
 
         [HttpGet]
-        [Route("getposts")]
-        public ActionResult GetPosts()
+        [Route("getall")]
+        public ActionResult GetAll()
         {
-            var posts = _context.Posts.Include(p => p.Comments).Include(u => u.User).Include(p => p.Photo).ToList();
+            var posts = _uow.Posts.GetAll();
 
 
-            var postsToReturn = _mapper.Map<IEnumerable<PostDto>>(posts);
+            // var postsToReturn = _mapper.Map<IEnumerable<PostDto>>(posts);
 
-            return Ok(postsToReturn);
+            return Ok(posts);
         }
 
         [HttpPost]
@@ -58,21 +47,23 @@ namespace SocialNetwork_API.Controllers
             //    post.Photo.PublicId = currUploadImageDto.PublicId;
             //    post.Photo.Url = currUploadImageDto.Url;
             //}
+             
+
+            post.UserId = _uow.Users.GetUserId(User.Identity.Name);
+            post.SharedTime = DateTime.UtcNow;
             _uow.Posts.Add(post);
-            _uow.SaveChanges();
 
             return Ok(post);
         }
 
         [HttpGet]
         [Route("detail/{id}")]
-        public ActionResult GetPostById(int id)
+        public ActionResult GetPostById(ObjectId id)
         {
-            var post = _context.Posts.Include(c => c.Comments).ThenInclude(c => c.User).Include(u => u.User).Include(p => p.Photo).FirstOrDefault(i => i.Id == id);
+            var post = _uow.Posts.Find(x => x.Id == id).FirstOrDefault();
 
-            var postToReturn = _mapper.Map<PostDetailsDto>(post);
 
-            return Ok(postToReturn);
+            return Ok(post);
         }
 
         //[HttpGet("{id}")]

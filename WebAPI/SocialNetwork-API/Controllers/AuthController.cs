@@ -11,10 +11,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using SocialNetwork_API.DAL.Abstract;
 using SocialNetwork_API.Dtos;
+using SocialNetwork_API.Helpers;
 using SocialNetwork_API.Models;
 
 namespace SocialNetwork_API.Controllers
 {
+    
     [Route("api/[controller]")]
     [ApiController]
     public class AuthController : ControllerBase
@@ -65,25 +67,11 @@ namespace SocialNetwork_API.Controllers
                 return Unauthorized();
             }
 
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_configuration.GetSection("AppSettings:Token").Value);
+            var tokenString = TokenManager.GenerateToken(userForLoginDto, user.Id, _configuration);
 
-            var tokenDescriptor = new SecurityTokenDescriptor()
-            {
-                Subject = new System.Security.Claims.ClaimsIdentity(new Claim[] {
-                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                    new Claim(ClaimTypes.Name, user.Username.ToString())
+            
 
-                }),
-                Expires = DateTime.Now.AddDays(1),
-                SigningCredentials =
-                new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha512Signature)
-            };
-
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            var tokenString = tokenHandler.WriteToken(token);
-
-            return Ok(tokenString);
+            return Ok(new { tokenString, user });
         }
 
     }

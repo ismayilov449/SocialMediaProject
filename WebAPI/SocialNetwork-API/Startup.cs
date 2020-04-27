@@ -16,7 +16,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using SocialNetwork_API.DAL;
 using SocialNetwork_API.DAL.Abstract;
-using SocialNetwork_API.DAL.Concrete.EntityFramework;
+using SocialNetwork_API.DAL.Concrete.MongoDB;
 using SocialNetwork_API.Helpers;
 
 namespace SocialNetwork_API
@@ -36,26 +36,24 @@ namespace SocialNetwork_API
             var key = Encoding.ASCII.GetBytes(Configuration.GetSection("AppSettings:Token").Value);
 
             services.Configure<CloudinarySettings>(Configuration.GetSection("CloudinarySettings"));
-            services.AddDbContext<DataContext>(x =>
-            x.UseSqlServer(Configuration.GetConnectionString("Default")));
+            services.Configure<SocialMediaDBSettings>(Configuration.GetSection(nameof(SocialMediaDBSettings)));
 
+            services.AddSingleton<ISocialMediaDBSettings>(sm =>
+            sm.GetRequiredService<IOptions<SocialMediaDBSettings>>().Value);
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2).AddJsonOptions(opt =>
-            {
-                opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
-            });
-            services.AddAutoMapper(typeof(Startup));
-            services.AddCors();
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "API", Version = "v1" });
-            });
+            services.AddSingleton<SocialMediaDBSettings>();
+            services.AddScoped<IAuthRepository, AuthRepository>();
+            services.AddScoped<IPostRepository, PostRepository>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-            services.AddScoped<IUnitOfWork, EfUnitOfWork>();
-            services.AddScoped<IPostRepository, EfPostRepository>();
-            services.AddScoped<IAuthRepository, EfAuthRepository>();
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt =>
+            services.AddAuthentication(options =>
             {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+
+            }).AddJwtBearer(opt =>
+            {
+                
                 opt.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
                 {
                     //encrypttoken
@@ -63,8 +61,25 @@ namespace SocialNetwork_API
                     IssuerSigningKey = new SymmetricSecurityKey(key),
                     ValidateIssuer = false,
                     ValidateAudience = false,
+                    ValidateLifetime = false
                 };
             });
+
+            services.AddAutoMapper(typeof(Startup));
+            services.AddCors();
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "API", Version = "v1" });
+            });
+
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2).AddJsonOptions(opt =>
+            {
+                opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+            });
+          
+
+
+          
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -13,34 +13,34 @@ namespace SocialNetwork_API.Helpers
 
         public AutoMapperProfiles()
         {
-            CreateMap<Post, PostDto>()
-                .ForMember(dest => dest.ImgUrl, opt =>
-                {
-                    opt.MapFrom(src => src.Photo.Url);
-                }).ForMember(dest => dest.Comments, opt =>
-               {
-                   opt.MapFrom(src => src.Comments == null ? new List<Comment>() : src.Comments);
+            //CreateMap<Post, PostDto>()
+            //    .ForMember(dest => dest.ImgUrl, opt =>
+            //    {
+            //        opt.MapFrom(src => src.Photo.Url);
+            //    }).ForMember(dest => dest.Comments, opt =>
+            //   {
+            //       opt.MapFrom(src => src.Comments == null ? new List<Comment>() : src.Comments);
 
-               }).ForMember(dest => dest.Username, opt =>
-                {
-                    opt.MapFrom(src => src.User.Username);
-                });
+            //   }).ForMember(dest => dest.Username, opt =>
+            //    {
+            //        opt.MapFrom(src => src.User.Username);
+            //    });
 
-            CreateMap<Post, PostDetailsDto>()
-                .ForMember(dest => dest.ImgUrl, opt =>
-                {
-                    opt.MapFrom(src => src.Photo.Url);
-                }).ForMember(dest => dest.Comments, opt =>
-                {
-                    opt.MapFrom(src => src.Comments == null ? new List<Comment>() : src.Comments);
+            //CreateMap<Post, PostDetailsDto>()
+            //    .ForMember(dest => dest.ImgUrl, opt =>
+            //    {
+            //        opt.MapFrom(src => src.Photo.Url);
+            //    }).ForMember(dest => dest.Comments, opt =>
+            //    {
+            //        opt.MapFrom(src => src.Comments == null ? new List<Comment>() : src.Comments);
 
-                }).ForMember(dest => dest.Username, opt =>
-                {
-                    opt.MapFrom(src => src.User.Username);
-                }).ForMember(dest => dest.UserImgUrl, opt =>
-                {
-                    opt.MapFrom(src => src.User.ImgUrl);
-                });
+            //    }).ForMember(dest => dest.Username, opt =>
+            //    {
+            //        opt.MapFrom(src => src.User.Username);
+            //    }).ForMember(dest => dest.UserImgUrl, opt =>
+            //    {
+            //        opt.MapFrom(src => src.User.ImgUrl);
+            //    });
 
 
 
