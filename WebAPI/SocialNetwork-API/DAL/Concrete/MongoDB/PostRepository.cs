@@ -26,5 +26,7 @@ namespace SocialNetwork_API.DAL.Concrete.MongoDB
             var posts = _posts.Find(x => x.UserId == objectId).ToList();
             return posts;
         }
+
+       
     }
 }

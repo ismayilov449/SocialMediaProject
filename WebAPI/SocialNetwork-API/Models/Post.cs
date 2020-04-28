@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace SocialNetwork_API.Models
 {
+    [BsonCollection("Posts")]
     public class Post : IDocument
     {
         public ObjectId Id { get; set; }

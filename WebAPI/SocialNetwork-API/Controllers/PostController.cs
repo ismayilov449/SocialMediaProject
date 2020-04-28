@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using MongoDB.Bson;
 using SocialNetwork_API.DAL.Abstract;
+using SocialNetwork_API.Dtos;
+using SocialNetwork_API.Helpers;
 using SocialNetwork_API.Models;
 
 namespace SocialNetwork_API.Controllers
@@ -45,12 +47,47 @@ namespace SocialNetwork_API.Controllers
             post.UserId = currUserId;
             post.SharedTime = DateTime.UtcNow;
             _uow.Posts.Add(post);
-            
+
 
             currUser.Posts = _uow.Posts.GetPostsByUserId(currUserId).Select(x => x.Id).ToList();
-            _uow.Users.UpdateUser(currUser,currUserId);
-             
+            _uow.Users.UpdateUser(currUser, currUserId);
+
             return Ok(post);
+        }
+
+        [HttpPost]
+        [Route("editpost")]
+        public ActionResult EditPost([FromBody]PostDto post)
+        {
+
+            var currPost = _uow.Posts.Get(new ObjectId(post.Id));
+
+            currPost.ImgId = new ObjectId(post.ImgId);
+            currPost.SharedTime = post.SharedTime;
+            currPost.Text = post.Text;
+            currPost.Comments = post.Comments != null ? post.Comments.Select(x => x.Id).ToList() : null;
+
+            _uow.Posts.Edit(currPost);
+
+            return Ok(currPost);
+        }
+
+        [HttpDelete]
+        [Route("removepost/{id}")]
+        public ActionResult RemovePost(string id)
+        {
+
+            var currPost = _uow.Posts.Get(new ObjectId(id));
+            _uow.Posts.Delete(currPost);
+
+            var currUserId = _uow.Users.GetUserId(User.Identity.Name);
+            var currUser = _uow.Users.GetUser(currUserId);
+
+            currUser.Posts = _uow.Posts.GetPostsByUserId(currUserId).Select(x => x.Id).ToList();
+
+            _uow.Users.UpdateUser(currUser, currUserId);
+
+            return Ok();
         }
 
         [HttpGet]

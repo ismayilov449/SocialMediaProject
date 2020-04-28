@@ -23,7 +23,10 @@ namespace SocialNetwork_API.DAL.Concrete.MongoDB
 
         private protected string GetCollectionName(Type documentType)
         {
-            return documentType.Name + "s";
+            return ((BsonCollectionAttribute)documentType.GetCustomAttributes(
+                    typeof(BsonCollectionAttribute),
+                    true)
+                .FirstOrDefault())?.CollectionName;
         }
 
         public IQueryable<TDocument> GetAll()
