@@ -44,6 +44,7 @@ namespace SocialNetwork_API
             services.AddSingleton<SocialMediaDBSettings>();
             services.AddScoped<IAuthRepository, AuthRepository>();
             services.AddScoped<IPostRepository, PostRepository>();
+            services.AddScoped<ICommentRepository, CommentRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddAuthentication(options =>

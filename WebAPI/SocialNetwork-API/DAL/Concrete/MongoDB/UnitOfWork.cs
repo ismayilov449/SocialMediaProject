@@ -20,6 +20,8 @@ namespace SocialNetwork_API.DAL.Concrete.MongoDB
 
         public IAuthRepository _users { get; set; }
 
+        public ICommentRepository _comments { get; set; }
+
         public IPostRepository Posts
         {
             get
@@ -35,6 +37,15 @@ namespace SocialNetwork_API.DAL.Concrete.MongoDB
                 return _users ?? (_users = new AuthRepository(settings));
             }
         }
+
+        public ICommentRepository Comments
+        {
+            get
+            {
+                return _comments ?? (_comments = new CommentRepository(settings));
+            }
+        }
+
 
     }
 }

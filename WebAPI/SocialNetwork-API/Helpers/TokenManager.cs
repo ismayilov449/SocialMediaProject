@@ -25,7 +25,8 @@ namespace SocialNetwork_API.Helpers
             var tokenDescriptor = new SecurityTokenDescriptor()
             {
                 Subject = new System.Security.Claims.ClaimsIdentity(new Claim[] {
-                    new Claim(ClaimTypes.Name, userForLoginDto.Username.ToString())
+                    new Claim(ClaimTypes.Name, userForLoginDto.Username.ToString()),
+                    new Claim("UserId",userId.ToString())
 
                 }),
                 Expires = DateTime.UtcNow.AddDays(1),

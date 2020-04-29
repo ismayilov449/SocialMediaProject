@@ -11,7 +11,7 @@ namespace SocialNetwork_API.DAL.Abstract
 
         IAuthRepository Users { get; }
 
-        //ICommentRepository Comments { get; }
+        ICommentRepository Comments { get; }
 
         //IFriendsRepository Friends { get; }
 

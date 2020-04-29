@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -17,9 +20,11 @@ namespace SocialNetwork_API.Controllers
     {
         private IUnitOfWork _uow;
         private IConfiguration _configuration;
+        private IMapper _mapper;
 
-        public PostController(IUnitOfWork uow, IConfiguration configuration)
+        public PostController(IUnitOfWork uow, IConfiguration configuration, IMapper mapper)
         {
+            _mapper = mapper;
             _uow = uow;
             _configuration = configuration;
         }
@@ -28,20 +33,31 @@ namespace SocialNetwork_API.Controllers
         [Route("getall")]
         public ActionResult GetAll()
         {
-            var posts = _uow.Posts.GetAll();
 
+            var currUserPosts = _uow.Posts.GetAll();
+            var postsToReturn = _mapper.Map<IEnumerable<PostDto>>(currUserPosts);
 
-            // var postsToReturn = _mapper.Map<IEnumerable<PostDto>>(posts);
+            return Ok(postsToReturn);
+        }
 
-            return Ok(posts);
+        [HttpGet]
+        [Route("getuserposts")]
+        public ActionResult GetUserPosts()
+        {
+            var currUserId = new ObjectId(User.Claims.ToList().FirstOrDefault(i => i.Type == "UserId").Value);
+
+            var currUserPosts = _uow.Posts.Find(x => x.UserId == currUserId);
+            var postsToReturn = _mapper.Map<IEnumerable<PostDto>>(currUserPosts);
+
+            return Ok(postsToReturn);
         }
 
         [HttpPost]
         [Route("sharepost")]
         public ActionResult SharePost([FromBody]Post post)
         {
+            var currUserId = new ObjectId(User.Claims.ToList().FirstOrDefault(i => i.Type == "UserId").Value);
 
-            var currUserId = _uow.Users.GetUserId(User.Identity.Name);
             var currUser = _uow.Users.GetUser(currUserId);
 
             post.UserId = currUserId;
@@ -49,10 +65,13 @@ namespace SocialNetwork_API.Controllers
             _uow.Posts.Add(post);
 
 
+
             currUser.Posts = _uow.Posts.GetPostsByUserId(currUserId).Select(x => x.Id).ToList();
             _uow.Users.UpdateUser(currUser, currUserId);
 
-            return Ok(post);
+            var postToReturn = _mapper.Map<PostDto>(post);
+
+            return Ok(postToReturn);
         }
 
         [HttpPost]
@@ -61,13 +80,22 @@ namespace SocialNetwork_API.Controllers
         {
 
             var currPost = _uow.Posts.Get(new ObjectId(post.Id));
+            var currUserId = new ObjectId(User.Claims.ToList().FirstOrDefault(i => i.Type == "UserId").Value);
 
-            currPost.ImgId = new ObjectId(post.ImgId);
-            currPost.SharedTime = post.SharedTime;
-            currPost.Text = post.Text;
-            currPost.Comments = post.Comments != null ? post.Comments.Select(x => x.Id).ToList() : null;
+            if (post.UserId == currUserId.ToString())
+            {
 
-            _uow.Posts.Edit(currPost);
+                currPost.ImgId = new ObjectId(post.ImgId);
+                currPost.SharedTime = post.SharedTime;
+                currPost.Text = post.Text;
+                currPost.Comments = post.Comments;
+
+                _uow.Posts.Edit(currPost);
+            }
+            else
+            {
+                return Unauthorized();
+            }
 
             return Ok(currPost);
         }
@@ -76,28 +104,40 @@ namespace SocialNetwork_API.Controllers
         [Route("removepost/{id}")]
         public ActionResult RemovePost(string id)
         {
+            var currUserId = new ObjectId(User.Claims.ToList().FirstOrDefault(i => i.Type == "UserId").Value);
 
             var currPost = _uow.Posts.Get(new ObjectId(id));
-            _uow.Posts.Delete(currPost);
 
-            var currUserId = _uow.Users.GetUserId(User.Identity.Name);
-            var currUser = _uow.Users.GetUser(currUserId);
+            if (currPost.UserId == currUserId)
+            {
 
-            currUser.Posts = _uow.Posts.GetPostsByUserId(currUserId).Select(x => x.Id).ToList();
+                _uow.Posts.Delete(currPost);
+                var currUser = _uow.Users.GetUser(currUserId);
+                currUser.Posts = _uow.Posts.GetPostsByUserId(currUserId).Select(x => x.Id).ToList();
+                _uow.Users.UpdateUser(currUser, currUserId);
 
-            _uow.Users.UpdateUser(currUser, currUserId);
-
-            return Ok();
+                return Ok();
+            }
+            else
+            {
+                return Unauthorized();
+            }
         }
 
         [HttpGet]
         [Route("detail/{id}")]
-        public ActionResult GetPostById(ObjectId id)
+        public ActionResult GetPostById(string id)
         {
-            var post = _uow.Posts.Find(x => x.Id == id).FirstOrDefault();
+            var post = _uow.Posts.Find(x => x.Id == new ObjectId(id)).FirstOrDefault();
 
 
-            return Ok(post);
+            var postToReturn = new PostDetailsDto();
+            postToReturn.Id = post.Id.ToString();
+            postToReturn.Text = post.Text;
+            postToReturn.Comments = _uow.Comments.GetAll().Where(x => x.PostId == post.Id).ToList();
+            postToReturn.Username = User.Identity.Name;
+
+            return Ok(postToReturn);
         }
 
         //[HttpGet("{id}")]
