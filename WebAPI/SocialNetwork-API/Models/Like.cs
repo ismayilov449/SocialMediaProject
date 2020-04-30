@@ -1,4 +1,5 @@
 ﻿using MongoDB.Bson;
+using SocialNetwork_API.Helpers;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -7,12 +8,13 @@ using System.Threading.Tasks;
 
 namespace SocialNetwork_API.Models
 {
-    public class Like
+
+    [BsonCollection("Likes")]
+    public class Like : IDocument
     {
         public ObjectId Id { get; set; }
 
-        [Required]
         public ObjectId UserId { get; set; }
-        public User User { get; set; }
+        public ObjectId PostId { get; set; }
     }
 }

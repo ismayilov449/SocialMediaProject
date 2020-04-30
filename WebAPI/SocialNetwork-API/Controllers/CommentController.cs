@@ -55,5 +55,60 @@ namespace SocialNetwork_API.Controllers
         }
 
 
+        [HttpDelete]
+        [Route("removecomment/{id}")]
+        public ActionResult RemoveComment(string id)
+        {
+            var currComment = _uow.Comments.Find(x => x.Id == new ObjectId(id)).FirstOrDefault();
+            var currUserId = new ObjectId(User.Claims.ToList().FirstOrDefault(i => i.Type == "UserId").Value);
+
+
+            if (currComment.UserId == currUserId)
+            {
+                _uow.Comments.Delete(currComment);
+                _uow.Posts.Find(x => x.Id == currComment.PostId).FirstOrDefault().Comments.Remove(currComment.Id);
+
+                return Ok();
+            }
+            else
+            {
+                return Unauthorized();
+            }
+        }
+
+
+        [HttpPost]
+        [Route("editcomment")]
+        public ActionResult EditComment([FromBody]CommentDto commentDto)
+        {
+            var currComment = _uow.Comments.Find(x => x.Id == new ObjectId(commentDto.Id)).FirstOrDefault();
+            var currUserId = new ObjectId(User.Claims.ToList().FirstOrDefault(i => i.Type == "UserId").Value);
+
+            if (currComment.UserId == currUserId)
+            {
+
+                currComment.Text = commentDto.Text;
+
+                _uow.Comments.Edit(currComment);
+
+                return Ok();
+            }
+            else
+            {
+                return Unauthorized();
+            }
+        }
+
+
+        [HttpGet]
+        [Route("getusercomments")]
+        public ActionResult GetUserComments()
+        {
+            var currUserId = new ObjectId(User.Claims.ToList().FirstOrDefault(i => i.Type == "UserId").Value);
+            var comments = _uow.Comments.GetAll().Where(i => i.UserId == currUserId);
+            var commentstoReturn = _mapper.Map<IEnumerable<CommentDto>>(comments);
+            return Ok(commentstoReturn);
+        }
+
     }
 }

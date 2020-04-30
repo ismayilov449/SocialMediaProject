@@ -47,6 +47,19 @@ namespace SocialNetwork_API.Helpers
                    opt.MapFrom(src => src.UserId);
                });
 
+            //CreateMap<Post, PostDetailsDto>()
+            //  .ForMember(dest => dest.ImgId, opt =>
+            //  {
+            //      opt.MapFrom(src => src.ImgId);
+            //  }).ForMember(dest => dest.Comments, opt =>
+            //  {
+            //      opt.MapFrom(src => src.Comments);
+
+            //  }).ForMember(dest => dest.UserId, opt =>
+            //  {
+            //      opt.MapFrom(src => src.UserId);
+            //  });
+
             CreateMap<CommentDto, Comment>()
                 .ForMember(dest => dest.PostId, opt =>
                 {
@@ -59,31 +72,28 @@ namespace SocialNetwork_API.Helpers
                    opt.MapFrom(src => DateTime.UtcNow);
                });
 
-            //CreateMap<Post, PostDetailsDto>()
-            //    .ForMember(dest => dest.Id, opt =>
-            //   {
-            //       opt.MapFrom(src => src.Id.ToString());
-
-            //   });
-
-            //CreateMap<Post, PostDetailsDto>()
-            //    .ForMember(dest => dest.ImgUrl, opt =>
-            //    {
-            //        opt.MapFrom(src => src.Photo.Url);
-            //    }).ForMember(dest => dest.Comments, opt =>
-            //    {
-            //        opt.MapFrom(src => src.Comments == null ? new List<Comment>() : src.Comments);
-
-            //    }).ForMember(dest => dest.Username, opt =>
-            //    {
-            //        opt.MapFrom(src => src.User.Username);
-            //    }).ForMember(dest => dest.UserImgUrl, opt =>
-            //    {
-            //        opt.MapFrom(src => src.User.ImgUrl);
-            //    });
+            CreateMap<Comment, CommentDto>()
+              .ForMember(dest => dest.PostId, opt =>
+              {
+                  opt.MapFrom(src => src.PostId.ToString());
+              }).ForMember(dest => dest.UserId, opt =>
+              {
+                  opt.MapFrom(src => src.UserId.ToString());
+              }).ForMember(dest => dest.SharedTime, opt =>
+              {
+                  opt.MapFrom(src => DateTime.UtcNow);
+              });
 
 
-
+            CreateMap<Like, LikeDto>()
+               .ForMember(dest => dest.Id, opt =>
+               {
+                   opt.MapFrom(src => src.Id.ToString());
+               }).ForMember(obj => obj.Username,
+                exp => exp.MapFrom<UsernameResolver>())
+               .ForMember(obj => obj.LikedPosts,
+               exp => exp.MapFrom<LikedPostsResolver>());
+             
 
         }
 

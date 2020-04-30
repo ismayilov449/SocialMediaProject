@@ -131,10 +131,12 @@ namespace SocialNetwork_API.Controllers
             var post = _uow.Posts.Find(x => x.Id == new ObjectId(id)).FirstOrDefault();
 
 
+
             var postToReturn = new PostDetailsDto();
             postToReturn.Id = post.Id.ToString();
             postToReturn.Text = post.Text;
             postToReturn.Comments = _uow.Comments.GetAll().Where(x => x.PostId == post.Id).ToList();
+            postToReturn.Likes = _uow.Likes.GetAll().Where(x => x.PostId == post.Id).ToList();
             postToReturn.Username = User.Identity.Name;
 
             return Ok(postToReturn);

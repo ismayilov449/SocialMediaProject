@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace SocialNetwork_API.DAL.Abstract
 {
-    public interface IUnitOfWork 
+    public interface IUnitOfWork
     {
         IPostRepository Posts { get; }
 
@@ -13,9 +13,11 @@ namespace SocialNetwork_API.DAL.Abstract
 
         ICommentRepository Comments { get; }
 
+        ILikeRepository Likes { get; }
+
         //IFriendsRepository Friends { get; }
 
         //IMessageRepository Messages { get; }
-         
+
     }
 }

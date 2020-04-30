@@ -24,5 +24,6 @@ namespace SocialNetwork_API.Models
 
         public ICollection<ObjectId> Comments { get; set; }
 
+        public ICollection<ObjectId> Likes { get; set; }
     }
 }
