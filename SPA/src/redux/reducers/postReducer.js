@@ -1,15 +1,9 @@
 import * as ACTIONTYPES from "../actions/actionTypes";
 import initialState from "./initialState";
 
-export default function postReducer(state = initialState.post, action) {
+export default function postReducer(state = initialState.posts, action) {
   switch (action.type) {
-    case ACTIONTYPES.GET_POST_BY_ID_SUCCESS:
-      return action.payload;
-
-    case ACTIONTYPES.UPDATE_POST_SUCCESS:
-      return action.payload;
-
-    case ACTIONTYPES.CREATE_POST_SUCCESS:
+    case ACTIONTYPES.GET_POSTS_SUCCESS:
       return action.payload;
 
     default:

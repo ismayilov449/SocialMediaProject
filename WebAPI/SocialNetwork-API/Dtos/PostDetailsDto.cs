@@ -14,7 +14,7 @@ namespace SocialNetwork_API.Dtos
 
         public string UserImgUrl { get; set; }
 
-        public string ImgUrl { get; set; }
+        //public string ImgUrl { get; set; }
 
         public string Text { get; set; }
 

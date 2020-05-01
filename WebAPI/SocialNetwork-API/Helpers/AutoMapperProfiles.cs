@@ -20,32 +20,36 @@ namespace SocialNetwork_API.Helpers
         {
 
 
-            CreateMap<PostDto, Post>()
-                    .ForMember(dest => dest.ImgId, opt =>
-                    {
-                        opt.MapFrom(src => new ObjectId(src.ImgId));
-                    }).ForMember(dest => dest.Comments, opt =>
-                   {
-                       opt.MapFrom(src => src.Comments);
+            //CreateMap<PostDto, Post>()
+            //        .ForMember(dest => dest.ImgId, opt =>
+            //        {
+            //            opt.MapFrom(src => new ObjectId(src.ImgId));
+            //        }).ForMember(dest => dest.Comments, opt =>
+            //       {
+            //           opt.MapFrom(src => src.Comments);
 
-                   }).ForMember(dest => dest.UserId, opt =>
-                    {
-                        opt.MapFrom(src => new ObjectId(src.UserId));
-                    });
+            //       }).ForMember(dest => dest.UserId, opt =>
+            //        {
+            //            opt.MapFrom(src => new ObjectId(src.UserId));
+            //        });
 
 
             CreateMap<Post, PostDto>()
                .ForMember(dest => dest.ImgId, opt =>
                {
-                   opt.MapFrom(src => src.ImgId);
-               }).ForMember(dest => dest.Comments, opt =>
+                   opt.MapFrom(src => src.ImgId.ToString());
+               })
+               .ForMember(dest => dest.Comments, opt =>
                {
                    opt.MapFrom(src => src.Comments);
 
                }).ForMember(dest => dest.UserId, opt =>
                {
                    opt.MapFrom(src => src.UserId);
-               });
+               }).ForMember(obj => obj.LikeCount,
+                exp => exp.MapFrom<LikeCountResolver>());
+
+
 
             //CreateMap<Post, PostDetailsDto>()
             //  .ForMember(dest => dest.ImgId, opt =>
@@ -70,6 +74,9 @@ namespace SocialNetwork_API.Helpers
                 }).ForMember(dest => dest.SharedTime, opt =>
                {
                    opt.MapFrom(src => DateTime.UtcNow);
+               }).ForMember(dest => dest.Id, opt =>
+               {
+                   opt.MapFrom(src => new ObjectId(src.Id));
                });
 
             CreateMap<Comment, CommentDto>()
@@ -82,6 +89,9 @@ namespace SocialNetwork_API.Helpers
               }).ForMember(dest => dest.SharedTime, opt =>
               {
                   opt.MapFrom(src => DateTime.UtcNow);
+              }).ForMember(dest => dest.Id, opt =>
+              {
+                  opt.MapFrom(src => src.Id.ToString());
               });
 
 
@@ -90,10 +100,10 @@ namespace SocialNetwork_API.Helpers
                {
                    opt.MapFrom(src => src.Id.ToString());
                }).ForMember(obj => obj.Username,
-                exp => exp.MapFrom<UsernameResolver>())
+                exp => exp.MapFrom<UsernameResolverLikeDto>())
                .ForMember(obj => obj.LikedPosts,
                exp => exp.MapFrom<LikedPostsResolver>());
-             
+
 
         }
 

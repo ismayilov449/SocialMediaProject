@@ -34,8 +34,8 @@ namespace SocialNetwork_API.Controllers
         public ActionResult GetAll()
         {
 
-            var currUserPosts = _uow.Posts.GetAll();
-            var postsToReturn = _mapper.Map<IEnumerable<PostDto>>(currUserPosts);
+            var posts = _uow.Posts.GetAll();
+            var postsToReturn = _mapper.Map<IEnumerable<PostDto>>(posts);
 
             return Ok(postsToReturn);
         }

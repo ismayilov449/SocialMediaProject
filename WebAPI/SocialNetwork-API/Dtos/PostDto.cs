@@ -13,6 +13,8 @@ namespace SocialNetwork_API.Dtos
 
         public string UserId { get; set; }
 
+        public string Username { get; set; }
+
         public string ImgId { get; set; }
 
         public string Text { get; set; }
@@ -21,6 +23,10 @@ namespace SocialNetwork_API.Dtos
 
         public ICollection<ObjectId> Comments { get; set; }
 
-        public int Likes { get; set; }
+        public ICollection<ObjectId> Likes { get; set; }
+
+        public int LikeCount { get; set; }
+
     }
+
 }

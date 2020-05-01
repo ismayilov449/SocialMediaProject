@@ -42,6 +42,12 @@ namespace SocialNetwork_API.DAL.Concrete.MongoDB
             return _users.Find(x => x.Username == username).FirstOrDefault().Id;
         }
 
+        public string GetUsername(ObjectId id)
+        {
+            var username = _users.Find(x => x.Id == id).FirstOrDefault().Username;
+            return username;
+
+        }
         public async Task<User> Login(string userName, string password)
         {
 

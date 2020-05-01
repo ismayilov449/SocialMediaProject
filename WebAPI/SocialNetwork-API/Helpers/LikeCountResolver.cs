@@ -9,18 +9,18 @@ using System.Threading.Tasks;
 
 namespace SocialNetwork_API.Helpers
 {
-    public class UsernameResolver : IValueResolver<Like, LikeDto, string>
+    public class LikeCountResolver : IValueResolver<Post, PostDto, int>
     {
         private IUnitOfWork _uow;
 
-        public UsernameResolver(IUnitOfWork uow)
+        public LikeCountResolver(IUnitOfWork uow)
         {
             _uow = uow;
         }
 
-        public string Resolve(Like source, LikeDto destination, string destMember, ResolutionContext context)
+        public int Resolve(Post source, PostDto destination, int destMember, ResolutionContext context)
         {
-            return _uow.Users.GetUser(source.UserId).Username;
+            return _uow.Posts.Get(source.Id).Likes is null ? 0 : _uow.Posts.Get(source.Id).Likes.Count();
         }
     }
 }

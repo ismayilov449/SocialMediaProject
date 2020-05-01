@@ -13,8 +13,9 @@ namespace SocialNetwork_API.Models
     {
         public ObjectId Id { get; set; }
 
-        [Required]
         public ObjectId UserId { get; set; }
+
+        public string Username { get; set; }
 
         public ObjectId ImgId { get; set; }
 

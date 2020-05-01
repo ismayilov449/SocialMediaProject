@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace SocialNetwork_API.Models
 {
     [BsonCollection("Users")]
-    public class User
+    public class User : IDocument
     {
         public ObjectId Id { get; set; }
         public string Username { get; set; }
