@@ -1,23 +1,25 @@
 import React from "react";
 import { Container } from "reactstrap";
 import Navi from "../navi/Navi";
-import Dashboard from "./Dashboard";
-import { Switch, Route } from "react-router-dom";
-import Login from "../auth/Login";
-import NotFound from "../common/NotFound";
+import { Switch, Route, Router, Redirect } from "react-router-dom";
+import LoginPage from "../auth/LoginPage";
+import { PrivateRoute } from "../root/PrivateRoot";
+import Timeline from "../posts/Timeline";
+import { history } from "../../redux/services/helper/history";
 
 function App() {
   return (
     <div>
       <Container>
         <Navi></Navi>
-        <Switch>
-          <Route path="/login" exact component={Login}></Route>
-          <Route path="/" component={Dashboard}></Route>
-          <Route path="/home" component={Dashboard}></Route>
-
-          <Route component={NotFound}></Route>
-        </Switch>
+        <Router history={history}>
+          <Switch>
+            <PrivateRoute exact path="/" component={Timeline} />
+            <Route path="/login" component={LoginPage} />
+            {/* <Route path="/register" component={RegisterPage} /> */}
+            {/* <Redirect from="*" to="/" /> */}
+          </Switch>
+        </Router>
       </Container>
     </div>
   );
