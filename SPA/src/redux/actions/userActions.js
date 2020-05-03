@@ -3,16 +3,16 @@ import { userService } from "../services/userService";
 import { history } from "../../redux/services/helper/history";
 
 export const userActions = {
-  login_success,
+  login,
   logout,
   register,
 };
 
-function login_success(username, password) {
+function login(username, password) {
   return (dispatch) => {
     dispatch(request({ username }));
 
-    login(username, password).then(
+    login_success(username, password).then(
       (user) => {
         dispatch(success(user));
         history.push("/");
@@ -34,7 +34,7 @@ function login_success(username, password) {
   }
 }
 
-function login(username, password) {
+function login_success(username, password) {
   const requestOptions = {
     method: "POST",
     headers: { "Content-Type": "application/json" },

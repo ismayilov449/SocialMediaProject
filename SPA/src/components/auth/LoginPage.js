@@ -43,7 +43,7 @@ function LoginPage() {
 
     setSubmitted(true);
     if (username && password) {
-      dispatch(userActions.login_success(username, password));
+      dispatch(userActions.login(username, password));
     }
   }
 
