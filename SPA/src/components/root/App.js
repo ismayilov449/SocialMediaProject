@@ -3,6 +3,7 @@ import { Container } from "reactstrap";
 import Navi from "../navi/Navi";
 import { Switch, Route, Router, Redirect } from "react-router-dom";
 import LoginPage from "../auth/LoginPage";
+import Login from '../auth/Login'
 import { PrivateRoute } from "../root/PrivateRoot";
 import Timeline from "../posts/Timeline";
 import { history } from "../../redux/services/helper/history";

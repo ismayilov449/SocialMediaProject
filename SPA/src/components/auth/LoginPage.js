@@ -1,6 +1,17 @@
+// *
+// *
+// *
+// *
+//  LOGIN WITH HOOKS
+// *
+// *
+// *
+// *
+
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { Form, FormGroup, Col, Input, Button } from "reactstrap";
 
 import { userActions } from "../../redux/actions/userActions";
 
@@ -9,9 +20,12 @@ function LoginPage() {
     username: "",
     password: "",
   });
+
   const [submitted, setSubmitted] = useState(false);
   const { username, password } = inputs;
-  const loggingIn = useSelector((state) => state.authenticationReducer.loggingIn);
+  const loggingIn = useSelector(
+    (state) => state.authenticationReducer.loggingIn
+  );
   const dispatch = useDispatch();
 
   // reset login status
@@ -29,14 +43,48 @@ function LoginPage() {
 
     setSubmitted(true);
     if (username && password) {
-      dispatch(userActions.login(username, password));
+      dispatch(userActions.login_success(username, password));
     }
   }
 
   return (
     <div className="col-lg-8 offset-lg-2">
       <h2>Login</h2>
-      <form name="form" onSubmit={handleSubmit}>
+      <Form onSubmit={handleSubmit}>
+        <FormGroup row>
+          <Col sm={7}>
+            <Input
+              type="text"
+              name="username"
+              id="username"
+              placeholder="Username"
+              onChange={handleChange}
+            />
+          </Col>
+        </FormGroup>
+        <FormGroup row>
+          <Col sm={7}>
+            <Input
+              type="password"
+              name="password"
+              id="password"
+              placeholder="Password"
+              onChange={handleChange}
+            />
+          </Col>
+        </FormGroup>
+        <Button color="primary">
+          {loggingIn && (
+            <span className="spinner-border spinner-border-sm mr-1"></span>
+          )}
+          Login
+        </Button>
+        <Link to="/register" color="secondary">
+          Register
+        </Link>
+      </Form>
+
+      {/* <form name="form" onSubmit={handleSubmit}>
         <div className="form-group">
           <label>Username</label>
           <input
@@ -78,7 +126,7 @@ function LoginPage() {
             Register
           </Link>
         </div>
-      </form>
+      </form> */}
     </div>
   );
 }

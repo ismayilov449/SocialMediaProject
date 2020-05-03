@@ -3,16 +3,16 @@ import { userService } from "../services/userService";
 import { history } from "../../redux/services/helper/history";
 
 export const userActions = {
-  login,
+  login_success,
   logout,
   register,
 };
 
-function login(username, password) {
+function login_success(username, password) {
   return (dispatch) => {
     dispatch(request({ username }));
 
-    userService.login(username, password).then(
+    login(username, password).then(
       (user) => {
         dispatch(success(user));
         history.push("/");
@@ -32,6 +32,21 @@ function login(username, password) {
   function failure(error) {
     return { type: ACTIONTYPES.LOGIN_FAILURE, error };
   }
+}
+
+function login(username, password) {
+  const requestOptions = {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ username, password }),
+  };
+
+  return fetch("http://localhost:5000/api/auth/login", requestOptions)
+    .then(handleResponse)
+    .then((user) => {
+      localStorage.setItem("user", JSON.stringify(user));
+      return user;
+    });
 }
 
 function logout() {
@@ -63,4 +78,22 @@ function register(user) {
   function failure(error) {
     return { type: ACTIONTYPES.REGISTER_FAILURE, error };
   }
+}
+
+function handleResponse(response) {
+  return response.text().then((text) => {
+    const data = text && JSON.parse(text);
+    if (!response.ok) {
+      if (response.status === 401) {
+        // auto logout if 401 response returned from api
+        logout();
+        window.location.reload(true);
+      }
+
+      const error = (data && data.message) || response.statusText;
+      return Promise.reject(error);
+    }
+
+    return data;
+  });
 }
