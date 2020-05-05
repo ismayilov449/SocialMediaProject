@@ -35,6 +35,7 @@ namespace SocialNetwork_API.Controllers
         {
 
             var posts = _uow.Posts.GetAll();
+            posts = posts.OrderByDescending(x => x.SharedTime);
             var postsToReturn = _mapper.Map<IEnumerable<PostDto>>(posts);
 
             return Ok(postsToReturn);
@@ -56,10 +57,13 @@ namespace SocialNetwork_API.Controllers
         [Route("sharepost")]
         public ActionResult SharePost([FromBody]Post post)
         {
+
+            
             var currUserId = new ObjectId(User.Claims.ToList().FirstOrDefault(i => i.Type == "UserId").Value);
 
             var currUser = _uow.Users.GetUser(currUserId);
 
+            post.Username = currUser.Username;
             post.UserId = currUserId;
             post.SharedTime = DateTime.UtcNow;
             _uow.Posts.Add(post);

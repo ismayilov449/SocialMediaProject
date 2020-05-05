@@ -47,6 +47,7 @@ namespace SocialNetwork_API.Controllers
             var userToCreate = new User
             {
                 Username = userForRegisterDto.Username,
+                Email = userForRegisterDto.Email
             };
 
             var createdUser = await _authRepository.Register(userToCreate, userForRegisterDto.Password);
@@ -69,7 +70,8 @@ namespace SocialNetwork_API.Controllers
 
             var tokenString = TokenManager.GenerateToken(userForLoginDto, user.Id, _configuration);
 
-            return Ok(new { tokenString, user });
+
+            return Ok(new { tokenString });
         }
 
     }

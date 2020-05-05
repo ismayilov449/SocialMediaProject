@@ -8,6 +8,33 @@ export const userActions = {
   register,
 };
 
+//with userService.js
+// function login(username, password) {
+//   return (dispatch) => {
+//     dispatch(request({ username }));
+
+//     userService.login(username, password).then(
+//       (user) => {
+//         dispatch(success(user));
+//         history.replace('/');
+//       },
+//       (error) => {
+//         dispatch(failure(error.toString()));
+//       }
+//     );
+//   };
+
+//   function request(user) {
+//     return { type: ACTIONTYPES.LOGIN_REQUEST, user };
+//   }
+//   function success(user) {
+//     return { type: ACTIONTYPES.LOGIN_SUCCESS, user };
+//   }
+//   function failure(error) {
+//     return { type: ACTIONTYPES.LOGIN_FAILURE, error };
+//   }
+// }
+
 function login(username, password) {
   return (dispatch) => {
     dispatch(request({ username }));
@@ -15,7 +42,7 @@ function login(username, password) {
     login_success(username, password).then(
       (user) => {
         dispatch(success(user));
-        history.push("/");
+        history.replace("/");
       },
       (error) => {
         dispatch(failure(error.toString()));
@@ -54,11 +81,38 @@ function logout() {
   return { type: ACTIONTYPES.LOGOUT };
 }
 
+//with userService
+// function register(user) {
+//   return (dispatch) => {
+//     dispatch(request(user));
+
+//     userService.register(user).then(
+//       (user) => {
+//         dispatch(success());
+//         history.push("/");
+//       },
+//       (error) => {
+//         dispatch(failure(error.toString()));
+//       }
+//     );
+//   };
+
+//   function request(user) {
+//     return { type: ACTIONTYPES.REGISTER_REQUEST, user };
+//   }
+//   function success(user) {
+//     return { type: ACTIONTYPES.REGISTER_SUCCESS, user };
+//   }
+//   function failure(error) {
+//     return { type: ACTIONTYPES.REGISTER_FAILURE, error };
+//   }
+// }
+
 function register(user) {
   return (dispatch) => {
     dispatch(request(user));
 
-    userService.register(user).then(
+    register_success(user).then(
       (user) => {
         dispatch(success());
         history.push("/");
@@ -78,6 +132,18 @@ function register(user) {
   function failure(error) {
     return { type: ACTIONTYPES.REGISTER_FAILURE, error };
   }
+}
+
+function register_success(user) {
+  const requestOptions = {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(user),
+  };
+
+  return fetch("http://localhost:5000/api/auth/register", requestOptions).then(
+    handleResponse
+  );
 }
 
 function handleResponse(response) {

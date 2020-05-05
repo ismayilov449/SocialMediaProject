@@ -22,19 +22,22 @@ namespace SocialNetwork_API.Helpers
             var key = Encoding.ASCII.GetBytes(_configuration.GetSection("AppSettings:Token").Value);
 
 
+
             var tokenDescriptor = new SecurityTokenDescriptor()
             {
-                Subject = new System.Security.Claims.ClaimsIdentity(new Claim[] {
-                    new Claim(ClaimTypes.Name, userForLoginDto.Username.ToString()),
-                    new Claim("UserId",userId.ToString())
-
-                }),
+                Subject = new ClaimsIdentity(new Claim[]
+            {
+                 new Claim(ClaimTypes.Name, userForLoginDto.Username.ToString()),
+                 new Claim("UserId",userId.ToString())
+            }),
                 Expires = DateTime.UtcNow.AddDays(1),
                 SigningCredentials =
                 new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha512Signature)
             };
 
             var token = tokenHandler.CreateJwtSecurityToken(tokenDescriptor);
+
+
 
             return tokenHandler.WriteToken(token);
         }
@@ -47,7 +50,7 @@ namespace SocialNetwork_API.Helpers
                 JwtSecurityToken jwtToken = (JwtSecurityToken)tokenHandler.ReadToken(token);
                 if (jwtToken == null)
                     return null;
-                byte[] key = Convert.FromBase64String(_configuration.GetSection("AppSettings:Token").Value);
+                byte[] key = Encoding.ASCII.GetBytes(_configuration.GetSection("AppSettings:Token").Value);
                 TokenValidationParameters parameters = new TokenValidationParameters()
                 {
                     RequireExpirationTime = true,

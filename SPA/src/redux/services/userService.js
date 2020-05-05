@@ -8,31 +8,21 @@ export const userService = {
   //   delete: _delete,
 };
 
-function authHeader() {
-  // return authorization header with jwt token
-  let user = JSON.parse(localStorage.getItem("user"));
 
-  if (user && user.token) {
-    return { Authorization: "Bearer " + user.token };
-  } else {
-    return {};
-  }
+function login(username, password) {
+  const requestOptions = {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ username, password }),
+  };
+
+  return fetch("http://localhost:5000/api/auth/login", requestOptions)
+    .then(handleResponse)
+    .then((user) => {
+      localStorage.setItem("user", JSON.stringify(user));
+      return user;
+    });
 }
-
-// function login(username, password) {
-//   const requestOptions = {
-//     method: "POST",
-//     headers: { "Content-Type": "application/json" },
-//     body: JSON.stringify({ username, password }),
-//   };
-
-//   return fetch("http://localhost:5000/api/auth/login", requestOptions)
-//     .then(handleResponse)
-//     .then((user) => {
-//       localStorage.setItem("user", JSON.stringify(user));
-//       return user;
-//     });
-// }
 
 function logout() {
   localStorage.removeItem("user");

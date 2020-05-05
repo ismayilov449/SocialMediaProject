@@ -1,21 +1,99 @@
 import * as ACTIONTYPES from "./actionTypes";
+import { authHeader } from "../services/helper/authHeader";
 
-export function getPostsSuccess(posts) {
-  return {
-    type: ACTIONTYPES.GET_POSTS_SUCCESS,
-    payload: posts,
+export const postActions = {
+  getAll,
+  sharePost,
+};
+
+function getAll() {
+  return (dispatch) => {
+    dispatch(request());
+
+    getAll_success().then(
+      (posts) => {
+        dispatch(success(posts));
+      },
+      (error) => {
+        dispatch(failure(error.toString()));
+      }
+    );
   };
+
+  function request() {
+    return { type: ACTIONTYPES.GETALL_REQUEST };
+  }
+  function success(posts) {
+    return { type: ACTIONTYPES.GETALL_SUCCESS, posts };
+  }
+  function failure(error) {
+    return { type: ACTIONTYPES.GETALL_FAILURE, error };
+  }
 }
 
-export function getPosts() {
-  return function (dispatch) {
-    let url = "http://localhost:5000/api/post/getall";
+function getAll_success() {
+  let url = "http://localhost:5000/api/post/getall";
 
-    return fetch(url)
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        dispatch(getPostsSuccess(data));
-      });
+  return fetch(url)
+    .then(handleResponse)
+    .then((data) => {
+      return data;
+    });
+}
+
+function sharePost(post) {
+  return (dispatch) => {
+    dispatch(request(post));
+
+    sharePost_success(post).then(
+      (post) => {
+        dispatch(success(post));
+      },
+      (error) => {
+        dispatch(failure(error.toString));
+      }
+    );
   };
+
+  function request(post) {
+    return { type: ACTIONTYPES.SHAREPOST_REQUEST, post };
+  }
+  function success(post) {
+    return { type: ACTIONTYPES.SHAREPOST_SUCCESS, post };
+  }
+  function failure(error) {
+    return { type: ACTIONTYPES.SHAREPOST_FAILURE, error };
+  }
+}
+
+function sharePost_success(post) {
+  const requestOptions = {
+    method: "POST",
+    headers: { ...authHeader(), "Content-Type": "application/json" },
+    body: JSON.stringify(post),
+  };
+
+  return fetch("http://localhost:5000/api/post/sharepost", requestOptions)
+    .then(handleResponse)
+    .then((data) => {
+      return data;
+    });
+}
+
+function handleResponse(response) {
+  return response.text().then((text) => {
+    const data = text && JSON.parse(text);
+    if (!response.ok) {
+      if (response.status === 401) {
+        // auto logout if 401 response returned from api
+        //logout();
+        window.location.reload(true);
+      }
+
+      const error = (data && data.message) || response.statusText;
+      return Promise.reject(error);
+    }
+
+    return data;
+  });
 }

@@ -1,12 +1,15 @@
 import React from "react";
 import { Container } from "reactstrap";
 import Navi from "../navi/Navi";
-import { Switch, Route, Router, Redirect } from "react-router-dom";
+import { Switch, Route, Router } from "react-router-dom";
 import LoginPage from "../auth/LoginPage";
-import Login from '../auth/Login'
+import Login from "../auth/Login";
+import Register from "../auth/Register";
+import RegisterPage from "../auth/RegisterPage";
 import { PrivateRoute } from "../root/PrivateRoot";
 import Timeline from "../posts/Timeline";
 import { history } from "../../redux/services/helper/history";
+import NotFound from "../common/NotFound";
 
 function App() {
   return (
@@ -16,9 +19,10 @@ function App() {
         <Router history={history}>
           <Switch>
             <PrivateRoute exact path="/" component={Timeline} />
-            <Route path="/login" component={LoginPage} />
-            {/* <Route path="/register" component={RegisterPage} /> */}
+            <Route path="/login" component={Login} />
+            <Route path="/register" component={Register} />
             {/* <Redirect from="*" to="/" /> */}
+            <Route component={NotFound} />
           </Switch>
         </Router>
       </Container>

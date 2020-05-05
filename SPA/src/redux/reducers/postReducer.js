@@ -1,10 +1,20 @@
 import * as ACTIONTYPES from "../actions/actionTypes";
 import initialState from "./initialState";
 
-export default function postReducer(state = initialState.posts, action) {
+export default function postReducer(state = initialState.post, action) {
   switch (action.type) {
-    case ACTIONTYPES.GET_POSTS_SUCCESS:
-      return action.payload;
+    case ACTIONTYPES.SHAREPOST_REQUEST:
+      return {
+        post: action.post,
+      };
+
+    case ACTIONTYPES.SHAREPOST_SUCCESS:
+      return {
+        post: action.post,
+      };
+
+    case ACTIONTYPES.SHAREPOST_FAILURE:
+      return {};
 
     default:
       return state;

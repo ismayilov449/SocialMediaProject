@@ -29,6 +29,7 @@ class Login extends Component {
           onSubmit={(e) => {
             e.preventDefault();
             this.props.actions.login(this.state.username, this.state.password);
+            
           }}
         >
           <FormGroup row>
@@ -68,7 +69,9 @@ class Login extends Component {
 }
 
 function mapStateToProps(state) {
-  return {};
+  return {
+    
+  };
 }
 
 function mapDispatchToProps(dispatch) {
