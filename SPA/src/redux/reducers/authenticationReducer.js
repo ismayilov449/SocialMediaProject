@@ -2,9 +2,12 @@ import * as ACTIONTYPES from "../actions/actionTypes";
 import initialState from "../reducers/initialState";
 
 var user = initialState.user;
+
+
 var currState = user ? { loggedIn: true, user } : {};
 
 export default function authenticationReducer(state = currState, action) {
+  
   switch (action.type) {
     case ACTIONTYPES.LOGIN_REQUEST:
       return {

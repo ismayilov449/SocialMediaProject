@@ -1,6 +1,7 @@
 import * as ACTIONTYPES from "../actions/actionTypes";
 import { userService } from "../services/userService";
 import { history } from "../../redux/services/helper/history";
+import initialState from "../../redux/reducers/initialState";
 
 export const userActions = {
   login,
@@ -42,6 +43,7 @@ function login(username, password) {
     login_success(username, password).then(
       (user) => {
         dispatch(success(user));
+        //initialState.user = user;
         history.replace("/");
       },
       (error) => {
@@ -78,6 +80,7 @@ function login_success(username, password) {
 
 function logout() {
   userService.logout();
+  initialState.user = {};
   return { type: ACTIONTYPES.LOGOUT };
 }
 

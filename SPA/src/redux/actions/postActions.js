@@ -4,6 +4,7 @@ import { authHeader } from "../services/helper/authHeader";
 export const postActions = {
   getAll,
   sharePost,
+  likePost,
 };
 
 function getAll() {
@@ -74,6 +75,44 @@ function sharePost_success(post) {
   };
 
   return fetch("http://localhost:5000/api/post/sharepost", requestOptions)
+    .then(handleResponse)
+    .then((data) => {
+      return data;
+    });
+}
+
+function likePost(postId) {
+  return (dispatch) => {
+    dispatch(request(postId));
+
+    likePost_success(postId).then(
+      (post) => {
+        dispatch(success(post));
+      },
+      (error) => {
+        dispatch(failure(error.toString));
+      }
+    );
+  };
+
+  function request(post) {
+    return { type: ACTIONTYPES.SHAREPOST_REQUEST, post };
+  }
+  function success(post) {
+    return { type: ACTIONTYPES.SHAREPOST_SUCCESS, post };
+  }
+  function failure(error) {
+    return { type: ACTIONTYPES.SHAREPOST_FAILURE, error };
+  }
+}
+
+function likePost_success(postId) {
+  const requestOptions = {
+    method: "POST",
+    headers: { ...authHeader(), "Content-Type": "application/json" },
+  };
+
+  return fetch("http://localhost:5000/api/like/like/" + postId, requestOptions)
     .then(handleResponse)
     .then((data) => {
       return data;

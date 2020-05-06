@@ -71,7 +71,7 @@ namespace SocialNetwork_API.Controllers
             var tokenString = TokenManager.GenerateToken(userForLoginDto, user.Id, _configuration);
 
 
-            return Ok(new { tokenString });
+            return Ok(new { tokenString , user});
         }
 
     }

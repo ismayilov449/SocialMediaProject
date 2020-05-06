@@ -20,7 +20,7 @@ class Timeline extends Component {
           </ListGroupItem>
           {this.props.posts.map((post) => (
             <ListGroupItem key={post.id}>
-              <Post post={post}></Post>
+              <Post post={post} like={this.props.actions.like}></Post>
             </ListGroupItem>
           ))}
         </ListGroup>
@@ -33,6 +33,7 @@ function mapDispatchToProps(dispatch) {
   return {
     actions: {
       getAll: bindActionCreators(postActions.getAll, dispatch),
+      like: bindActionCreators(postActions.likePost, dispatch),
     },
   };
 }
