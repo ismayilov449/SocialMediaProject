@@ -14,13 +14,16 @@ import {
 import { Link } from "react-router-dom";
 import "../posts/PostStyle.css";
 
-function Post({ post, like }) {
+function Post({ user, post, like, dislike, deletePost, edit }) {
   const [isOpen, setOpen] = useState(false);
 
   const toggle = () => setOpen(!isOpen);
 
+  console.log(user.user);
+
   return (
     <Card body inverse style={{ backgroundColor: "#333", borderColor: "#333" }}>
+      {console.log(post)}
       <CardTitle>
         <div class="post">
           <Link to="profile/">{post.username}</Link>
@@ -28,7 +31,9 @@ function Post({ post, like }) {
             <DropdownToggle size="sm">More</DropdownToggle>
             <DropdownMenu>
               <DropdownItem>Edit</DropdownItem>
-              <DropdownItem>Delete</DropdownItem>
+              <DropdownItem onClick={() => deletePost(post.id)}>
+                Delete
+              </DropdownItem>
             </DropdownMenu>
           </ButtonDropdown>
         </div>
@@ -38,9 +43,16 @@ function Post({ post, like }) {
         <CardText>{post.text}</CardText>
         <CardText>Likes : {post.likeCount}</CardText>
 
-        <Button outline color="info" onClick={() => like(post.id)}>
-          Like
-        </Button>
+        {true ? (
+          <Button outline color="info" onClick={() => dislike(post.id)}>
+            Dislike
+          </Button>
+        ) : (
+          <Button outline color="info" onClick={() => like(post.id)}>
+            Like
+          </Button>
+        )}
+
         {/* <Link to={"/postdetail/" + post.id}>Read more..</Link> */}
       </CardBody>
     </Card>

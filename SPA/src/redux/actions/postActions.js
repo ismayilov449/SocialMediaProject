@@ -5,6 +5,8 @@ export const postActions = {
   getAll,
   sharePost,
   likePost,
+  dislikePost,
+  deletePost,
 };
 
 function getAll() {
@@ -96,13 +98,13 @@ function likePost(postId) {
   };
 
   function request(post) {
-    return { type: ACTIONTYPES.SHAREPOST_REQUEST, post };
+    return { type: ACTIONTYPES.LIKEPOST_REQUEST, post };
   }
   function success(post) {
-    return { type: ACTIONTYPES.SHAREPOST_SUCCESS, post };
+    return { type: ACTIONTYPES.LIKEPOST_SUCCESS, post };
   }
   function failure(error) {
-    return { type: ACTIONTYPES.SHAREPOST_FAILURE, error };
+    return { type: ACTIONTYPES.LIKEPOST_FAILURE, error };
   }
 }
 
@@ -113,6 +115,87 @@ function likePost_success(postId) {
   };
 
   return fetch("http://localhost:5000/api/like/like/" + postId, requestOptions)
+    .then(handleResponse)
+    .then((data) => {
+      return data;
+    });
+}
+
+function dislikePost(postId) {
+  return (dispatch) => {
+    dispatch(request(postId));
+
+    dislikePost_success(postId).then(
+      (post) => {
+        dispatch(success(post));
+      },
+      (error) => {
+        dispatch(failure(error.toString));
+      }
+    );
+  };
+
+  function request(post) {
+    return { type: ACTIONTYPES.DISLIKEPOST_REQUEST, post };
+  }
+  function success(post) {
+    return { type: ACTIONTYPES.DISLIKEPOST_SUCCESS, post };
+  }
+  function failure(error) {
+    return { type: ACTIONTYPES.DISLIKEPOST_FAILURE, error };
+  }
+}
+
+function dislikePost_success(postId) {
+  const requestOptions = {
+    method: "DELETE",
+    headers: { ...authHeader(), "Content-Type": "application/json" },
+  };
+
+  return fetch(
+    "http://localhost:5000/api/like/dislike/" + postId,
+    requestOptions
+  )
+    .then(handleResponse)
+    .then((data) => {
+      return data;
+    });
+}
+
+function deletePost(postId) {
+  return (dispatch) => {
+    dispatch(request(postId));
+
+    deletePost_success(postId).then(
+      (post) => {
+        dispatch(success(post));
+      },
+      (error) => {
+        dispatch(failure(error.toString()));
+      }
+    );
+  };
+  function request(post) {
+    return { type: ACTIONTYPES.DELETEPOST_REQUEST, post };
+  }
+  function success(post) {
+    return { type: ACTIONTYPES.DELETEPOST_SUCCESS, post };
+  }
+  function failure(error) {
+    return { type: ACTIONTYPES.DELETEPOST_FAILURE, error };
+  }
+}
+
+function deletePost_success(postId) {
+  const requestOptions = {
+    method: "DELETE",
+    headers: { ...authHeader(), "Content-Type": "application/json" },
+  };
+
+  return fetch(
+    "http://localhost:5000/api/post/removepost/" + postId,
+    requestOptions
+  )
     .then(handleResponse)
     .then((data) => {
       return data;

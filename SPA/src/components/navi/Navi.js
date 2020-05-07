@@ -54,34 +54,36 @@ class Navi extends Component {
               <Nav navbar>
                 {/* {console.log(this.props.user)} */}
                 {this.props.user === undefined ? (
-                  console.log("a" + typeof this.props.user)
+                  <div></div>
                 ) : (
                   <NavItem>
-                    <NavLink>
-                      <ButtonDropdown
-                        toggle={() => this.toggle()}
-                        isOpen={this.state.isOpen}
-                      >
-                        <DropdownToggle outline color="info" size="sm">
-                          {this.props.user.user !== undefined
-                            ? this.props.user.user.username
-                            : " "}
-                        </DropdownToggle>
-                        <DropdownMenu>
-                          <DropdownItem>
-                            <Link
-                              size="sm"
-                              onClick={() => {
-                                this.props.actions.logout();
-                                history.push("/");
-                              }}
-                            >
-                              Logout
-                            </Link>{" "}
-                          </DropdownItem>
-                        </DropdownMenu>
-                      </ButtonDropdown>
-                    </NavLink>
+                    {this.props.user.user !== undefined ? (
+                      <NavLink>
+                        <ButtonDropdown
+                          toggle={() => this.toggle()}
+                          isOpen={this.state.isOpen}
+                        >
+                          <DropdownToggle outline color="info" size="sm">
+                            {this.props.user.user.username}
+                          </DropdownToggle>
+                          <DropdownMenu>
+                            <DropdownItem>
+                              <Link
+                                size="sm"
+                                onClick={() => {
+                                  this.props.actions.logout();
+                                  history.push("/");
+                                }}
+                              >
+                                Logout
+                              </Link>{" "}
+                            </DropdownItem>
+                          </DropdownMenu>
+                        </ButtonDropdown>
+                      </NavLink>
+                    ) : (
+                      <div></div>
+                    )}
                   </NavItem>
                 )}
 
