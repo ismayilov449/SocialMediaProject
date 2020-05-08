@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Form, FormGroup, Col, Input, Button } from "reactstrap";
-import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { postActions } from "../../redux/actions/postActions";
@@ -23,6 +22,8 @@ class SharePost extends Component {
         <Form
           onSubmit={(e) => {
             e.preventDefault();
+            
+            this.props.actions.getAll();
             this.props.actions.sharePost(this.state);
             history.push("/");
             this.props.actions.getAll();

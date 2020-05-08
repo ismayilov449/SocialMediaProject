@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using MongoDB.Bson;
 using SocialNetwork_API.DAL.Abstract;
 using SocialNetwork_API.Dtos;
 using SocialNetwork_API.Models;
@@ -20,7 +21,7 @@ namespace SocialNetwork_API.Helpers
 
         public string Resolve(Like source, LikeDto destination, string destMember, ResolutionContext context)
         {
-            return _uow.Users.GetUser(source.UserId).Username;
+            return _uow.Users.GetUsername(source.UserId);
         }
     }
 }

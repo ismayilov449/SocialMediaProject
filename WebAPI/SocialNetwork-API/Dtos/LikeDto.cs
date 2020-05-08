@@ -10,7 +10,6 @@ namespace SocialNetwork_API.Dtos
     {
         public string Id { get; set; }
         public string Username { get; set; }
-        public ICollection<Post> LikedPosts { get; set; }
 
     }
 }

@@ -14,12 +14,10 @@ import {
 import { Link } from "react-router-dom";
 import "../posts/PostStyle.css";
 
-function Post({ user, post, like, dislike, deletePost, edit }) {
+function Post({ user, post, like, dislike, deletePost, edit, update }) {
   const [isOpen, setOpen] = useState(false);
 
   const toggle = () => setOpen(!isOpen);
-
-
 
   return (
     <Card body inverse style={{ backgroundColor: "#333", borderColor: "#333" }}>
@@ -31,7 +29,13 @@ function Post({ user, post, like, dislike, deletePost, edit }) {
               <DropdownToggle size="sm">More</DropdownToggle>
               <DropdownMenu>
                 <DropdownItem>Edit</DropdownItem>
-                <DropdownItem onClick={() => deletePost(post.id)}>
+                <DropdownItem
+                  onClick={() => {
+                    update();
+                    deletePost(post.id);
+                    update();
+                  }}
+                >
                   Delete
                 </DropdownItem>
               </DropdownMenu>
@@ -46,23 +50,33 @@ function Post({ user, post, like, dislike, deletePost, edit }) {
         <CardText>{post.text}</CardText>
         <CardText>Likes : {post.likeCount}</CardText>
 
-        {/* {true ? (
-          <Button outline color="info" onClick={() => dislike(post.id)}>
+        {post.likes.some((u) => u.username === user.user.username) ? (
+          <Button
+            outline
+            color="info"
+            onClick={() => {
+              update();
+
+              dislike(post.id);
+              update();
+            }}
+          >
             Dislike
           </Button>
-        ) : ( */}
-        <Button
-          outline
-          color="info"
-          onClick={() => {
-            like(post.id);
-          }}
-        >
-          Like
-        </Button>
-        {/* )} */}
+        ) : (
+          <Button
+            outline
+            color="info"
+            onClick={() => {
+              update();
 
-        {/* <Link to={"/postdetail/" + post.id}>Read more..</Link> */}
+              like(post.id);
+              update();
+            }}
+          >
+            Like
+          </Button>
+        )}
       </CardBody>
     </Card>
   );

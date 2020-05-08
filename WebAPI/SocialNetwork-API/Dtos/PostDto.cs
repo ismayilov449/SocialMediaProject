@@ -23,7 +23,7 @@ namespace SocialNetwork_API.Dtos
 
         public ICollection<ObjectId> Comments { get; set; }
 
-        public ICollection<ObjectId> Likes { get; set; }
+        public List<LikeDto> Likes { get; set; }
 
         public int LikeCount { get; set; }
 

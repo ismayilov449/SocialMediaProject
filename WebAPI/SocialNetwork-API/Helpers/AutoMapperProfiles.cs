@@ -46,8 +46,11 @@ namespace SocialNetwork_API.Helpers
                }).ForMember(dest => dest.UserId, opt =>
                {
                    opt.MapFrom(src => src.UserId);
-               }).ForMember(obj => obj.LikeCount,
-                exp => exp.MapFrom<LikeCountResolver>());
+               }).ForMember(obj => obj.Likes,
+                exp => exp.MapFrom<PostDetailUsernameResolver>())
+                .ForMember(obj => obj.LikeCount,
+                exp => exp.MapFrom<LikeCountResolver>())
+                .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
 
 
 
@@ -77,7 +80,7 @@ namespace SocialNetwork_API.Helpers
                }).ForMember(dest => dest.Id, opt =>
                {
                    opt.MapFrom(src => new ObjectId(src.Id));
-               });
+               }).ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
 
             CreateMap<Comment, CommentDto>()
               .ForMember(dest => dest.PostId, opt =>
@@ -92,18 +95,43 @@ namespace SocialNetwork_API.Helpers
               }).ForMember(dest => dest.Id, opt =>
               {
                   opt.MapFrom(src => src.Id.ToString());
-              });
+              }).ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
+
+
+            CreateMap<Post, PostDetailsDto>()
+                  .ForMember(dest => dest.Id, opt =>
+                  {
+                      opt.MapFrom(src => src.Id.ToString());
+                  }).ForMember(dest => dest.Comments, opt =>
+                  {
+                      opt.MapFrom<ListCommentsResolver>();
+
+                  }).ForMember(dest => dest.Username, opt =>
+                  {
+                      opt.MapFrom(src => src.Username);
+                  }).ForMember(dest => dest.Likes, opt => opt.MapFrom<PostDetailLikeResolver>()).ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
+
+
+            //CreateMap<Like, LikeDto>()
+            //     .ForMember(dest => dest.Id, opt =>
+            //     {
+            //         opt.MapFrom(src => src.Id.ToString());
+            //     })
+            //   .ForMember(obj => obj.Username,
+            //   exp => exp.MapFrom<UsernameResolverLikeDto>()).ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
+
+            //CreateMap<Like, LikeDto>()
+
+            // .ForMember(obj => obj.Username,
+            //     exp => exp.MapFrom<UsernameResolverLikeDto>()).ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
 
 
             CreateMap<Like, LikeDto>()
                .ForMember(dest => dest.Id, opt =>
                {
-                   opt.MapFrom(src => src.Id.ToString());
+                   opt.MapFrom(src => src.Id);
                }).ForMember(obj => obj.Username,
-                exp => exp.MapFrom<UsernameResolverLikeDto>())
-               .ForMember(obj => obj.LikedPosts,
-               exp => exp.MapFrom<LikedPostsResolver>());
-
+                exp => exp.MapFrom<UsernameResolverLikeDto>());
 
         }
 

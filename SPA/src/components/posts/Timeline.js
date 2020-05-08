@@ -22,7 +22,7 @@ class Timeline extends Component {
       <div>
         <ListGroup>
           <ListGroupItem>
-            <SharePost update={this.componentDidUpdate}></SharePost>
+            <SharePost ></SharePost>
           </ListGroupItem>
           {this.props.posts.map((post) => (
             <ListGroupItem key={post.id}>
@@ -32,6 +32,7 @@ class Timeline extends Component {
                 like={this.props.actions.like}
                 dislike={this.props.actions.dislike}
                 deletePost={this.props.actions.deletePost}
+                update = {this.props.actions.getAll}
               ></Post>
             </ListGroupItem>
           ))}

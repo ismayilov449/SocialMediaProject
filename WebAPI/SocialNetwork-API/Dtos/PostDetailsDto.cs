@@ -14,14 +14,14 @@ namespace SocialNetwork_API.Dtos
 
         public string UserImgUrl { get; set; }
 
-        //public string ImgUrl { get; set; }
+        public string ImgUrl { get; set; }
 
         public string Text { get; set; }
 
         public DateTime SharedTime { get; set; }
 
-        public ICollection<Comment> Comments { get; set; }
+        public ICollection<CommentDto> Comments { get; set; }
 
-        public ICollection<Like> Likes { get; set; }
+        public ICollection<LikeDto> Likes { get; set; }
     }
 }
