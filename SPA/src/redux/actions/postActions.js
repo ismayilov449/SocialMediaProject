@@ -97,8 +97,8 @@ function likePost(postId) {
     );
   };
 
-  function request(post) {
-    return { type: ACTIONTYPES.LIKEPOST_REQUEST, post };
+  function request() {
+    return { type: ACTIONTYPES.LIKEPOST_REQUEST };
   }
   function success(post) {
     return { type: ACTIONTYPES.LIKEPOST_SUCCESS, post };
@@ -108,11 +108,15 @@ function likePost(postId) {
   }
 }
 
+
+
 function likePost_success(postId) {
   const requestOptions = {
     method: "POST",
     headers: { ...authHeader(), "Content-Type": "application/json" },
   };
+
+  
 
   return fetch("http://localhost:5000/api/like/like/" + postId, requestOptions)
     .then(handleResponse)

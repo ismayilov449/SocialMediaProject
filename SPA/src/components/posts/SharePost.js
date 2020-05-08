@@ -9,7 +9,12 @@ import { history } from "../../redux/services/helper/history";
 class SharePost extends Component {
   state = {
     text: "",
+    posts: [],
   };
+
+  componentDidMount() {
+    this.props.actions.getAll();
+  }
 
   render() {
     return (
@@ -20,6 +25,7 @@ class SharePost extends Component {
             e.preventDefault();
             this.props.actions.sharePost(this.state);
             history.push("/");
+            this.props.actions.getAll();
           }}
         >
           <FormGroup row>
@@ -44,12 +50,15 @@ class SharePost extends Component {
 }
 
 function mapStateToProps(state) {
-  return {};
+  return {
+    posts: state.postsReducer,
+  };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     actions: {
+      getAll: bindActionCreators(postActions.getAll, dispatch),
       sharePost: bindActionCreators(postActions.sharePost, dispatch),
     },
   };
