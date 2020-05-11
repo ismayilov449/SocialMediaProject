@@ -13,22 +13,40 @@ import {
 
 import { Link } from "react-router-dom";
 import "../posts/PostStyle.css";
+import EditPost from "./EditPost";
+import { render } from "@testing-library/react";
 
-function Post({ user, post, like, dislike, deletePost, edit, update }) {
+function Post({ user, post, like, dislike, deletePost, editPost, update }) {
   const [isOpen, setOpen] = useState(false);
+  let [isVisible, setVisible] = useState(true);
 
   const toggle = () => setOpen(!isOpen);
 
-  return (
+  function formatDate(string) {
+    var options = { year: "numeric", month: "long", day: "numeric" };
+    return new Date(string).toLocaleDateString([], options);
+  }
+
+  return isVisible === true ? (
     <Card body inverse style={{ backgroundColor: "#333", borderColor: "#333" }}>
       <CardTitle>
         <div class="post">
-          <Link to="profile/">{post.username}</Link>
+          <span inline>
+            <Link to="profile/">{post.username}</Link>
+            <small>{"\t\t"} {formatDate(post.sharedTime)}</small>
+          </span>
+
           {post.username === user.user.username ? (
             <ButtonDropdown left isOpen={isOpen} toggle={toggle}>
               <DropdownToggle size="sm">More</DropdownToggle>
               <DropdownMenu>
-                <DropdownItem>Edit</DropdownItem>
+                <DropdownItem
+                  onClick={() => {
+                    setVisible(false);
+                  }}
+                >
+                  Edit
+                </DropdownItem>
                 <DropdownItem
                   onClick={() => {
                     update();
@@ -79,6 +97,12 @@ function Post({ user, post, like, dislike, deletePost, edit, update }) {
         )}
       </CardBody>
     </Card>
+  ) : (
+    <EditPost
+      post={post}
+      isVisible={isVisible}
+      setVisible={setVisible}
+    ></EditPost>
   );
 }
 

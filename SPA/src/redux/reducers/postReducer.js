@@ -16,6 +16,19 @@ export default function postReducer(state = initialState.post, action) {
     case ACTIONTYPES.SHAREPOST_FAILURE:
       return {};
 
+    case ACTIONTYPES.EDITPOST_REQUEST:
+      return {
+        post: action.post,
+      };
+
+    case ACTIONTYPES.EDITPOST_SUCCESS:
+      return {
+        post: action.post,
+      };
+
+    case ACTIONTYPES.EDITPOST_FAILURE:
+      return {};
+
     default:
       return state;
   }

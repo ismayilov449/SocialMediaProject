@@ -4,6 +4,7 @@ import { authHeader } from "../services/helper/authHeader";
 export const postActions = {
   getAll,
   sharePost,
+  editPost,
   likePost,
   dislikePost,
   deletePost,
@@ -83,6 +84,47 @@ function sharePost_success(post) {
     });
 }
 
+function editPost(post) {
+  return (dispatch) => {
+    dispatch(request(post));
+
+    editPost_success(post).then(
+      (post) => {
+        dispatch(success(post));
+      },
+      (error) => {
+        dispatch(failure(error.toString()));
+      }
+    );
+  };
+
+  function request(post) {
+    return { type: ACTIONTYPES.EDITPOST_REQUEST, post };
+  }
+  function success(post) {
+    return { type: ACTIONTYPES.EDITPOST_SUCCESS, post };
+  }
+  function failure(error) {
+    return { type: ACTIONTYPES.EDITPOST_FAILURE, error };
+  }
+}
+
+function editPost_success(post) {
+  const requestOptions = {
+    method: "POST",
+    headers: { ...authHeader(), "Content-Type": "application/json" },
+    body: JSON.stringify(post),
+  };
+
+  console.log(requestOptions);
+
+  return fetch("http://localhost:5000/api/post/editpost", requestOptions)
+    .then(handleResponse)
+    .then((data) => {
+      return data;
+    });
+}
+
 function likePost(postId) {
   return (dispatch) => {
     dispatch(request(postId));
@@ -108,15 +150,11 @@ function likePost(postId) {
   }
 }
 
-
-
 function likePost_success(postId) {
   const requestOptions = {
     method: "POST",
     headers: { ...authHeader(), "Content-Type": "application/json" },
   };
-
-  
 
   return fetch("http://localhost:5000/api/like/like/" + postId, requestOptions)
     .then(handleResponse)

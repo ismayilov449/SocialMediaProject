@@ -65,7 +65,7 @@ namespace SocialNetwork_API.Controllers
 
             post.Username = currUser.Username;
             post.UserId = currUserId;
-            post.SharedTime = DateTime.UtcNow;
+            post.SharedTime = DateTime.Now;
             _uow.Posts.Add(post);
 
 

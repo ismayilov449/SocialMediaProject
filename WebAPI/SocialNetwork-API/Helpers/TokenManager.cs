@@ -30,7 +30,7 @@ namespace SocialNetwork_API.Helpers
                  new Claim(ClaimTypes.Name, userForLoginDto.Username.ToString()),
                  new Claim("UserId",userId.ToString())
             }),
-                Expires = DateTime.UtcNow.AddDays(1),
+                Expires = DateTime.Now.AddDays(1),
                 SigningCredentials =
                 new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha512Signature)
             };

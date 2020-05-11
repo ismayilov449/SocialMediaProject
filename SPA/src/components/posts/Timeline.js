@@ -15,14 +15,13 @@ class Timeline extends Component {
     this.props.actions.getAll();
     this.setState({ posts: this.props.posts });
   }
- 
 
   render() {
     return (
       <div>
         <ListGroup>
           <ListGroupItem>
-            <SharePost ></SharePost>
+            <SharePost></SharePost>
           </ListGroupItem>
           {this.props.posts.map((post) => (
             <ListGroupItem key={post.id}>
@@ -32,7 +31,8 @@ class Timeline extends Component {
                 like={this.props.actions.like}
                 dislike={this.props.actions.dislike}
                 deletePost={this.props.actions.deletePost}
-                update = {this.props.actions.getAll}
+                editPost={this.props.actions.editPost}
+                update={this.props.actions.getAll}
               ></Post>
             </ListGroupItem>
           ))}
@@ -49,6 +49,7 @@ function mapDispatchToProps(dispatch) {
       like: bindActionCreators(postActions.likePost, dispatch),
       dislike: bindActionCreators(postActions.dislikePost, dispatch),
       deletePost: bindActionCreators(postActions.deletePost, dispatch),
+      editPost: bindActionCreators(postActions.editPost, dispatch),
     },
   };
 }
@@ -57,7 +58,6 @@ function mapStateToProps(state) {
   return {
     user: state.authenticationReducer.user,
     posts: state.postsReducer,
-    likes: state.likeReducer,
   };
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Timeline);

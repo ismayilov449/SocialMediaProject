@@ -5,28 +5,28 @@ import { bindActionCreators } from "redux";
 import { postActions } from "../../redux/actions/postActions";
 import { history } from "../../redux/services/helper/history";
 
-class SharePost extends Component {
+class EditPost extends Component {
   state = {
+    id: "",
     text: "",
-    posts: [],
   };
 
   componentDidMount() {
     this.props.actions.getAll();
+    document.getElementById("editPostText").defaultValue = this.props.post.text;
   }
 
   render() {
     return (
       <div>
-        <h2>What do you think hmm.. ?</h2>
         <Form
           onSubmit={(e) => {
             e.preventDefault();
-            
-            this.props.actions.getAll();
-            this.props.actions.sharePost(this.state);
-            history.push("/");
-            this.props.actions.getAll();
+            this.props.post.text = this.state.text;
+            this.props.actions.editPost(this.props.post);
+            this.props.setVisible(true);
+
+            history.replace("/");
           }}
         >
           <FormGroup row>
@@ -34,7 +34,7 @@ class SharePost extends Component {
               <Input
                 type="textarea"
                 name="text"
-                id="text"
+                id="editPostText"
                 placeholder="Type here"
                 onChange={(e) => {
                   this.setState({ text: e.target.value });
@@ -43,7 +43,7 @@ class SharePost extends Component {
             </Col>
           </FormGroup>
 
-          <Button color="primary">Share</Button>
+          <Button color="primary">Save</Button>
         </Form>
       </div>
     );
@@ -60,9 +60,9 @@ function mapDispatchToProps(dispatch) {
   return {
     actions: {
       getAll: bindActionCreators(postActions.getAll, dispatch),
-      sharePost: bindActionCreators(postActions.sharePost, dispatch),
+      editPost: bindActionCreators(postActions.editPost, dispatch),
     },
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SharePost);
+export default connect(mapStateToProps, mapDispatchToProps)(EditPost);
