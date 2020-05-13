@@ -14,11 +14,14 @@ import {
 import { Link } from "react-router-dom";
 import "../posts/PostStyle.css";
 import EditPost from "./EditPost";
-import { render } from "@testing-library/react";
+import ShareComment from "../comments/ShareComment";
+import CommentList from "../comments/CommentList";
 
 function Post({ user, post, like, dislike, deletePost, editPost, update }) {
   const [isOpen, setOpen] = useState(false);
-  let [isVisible, setVisible] = useState(true);
+  let [isVisibleEdit, setVisibleEdit] = useState(true);
+  let [readMore, setReadMore] = useState(false);
+  let [isVisibleComments, setVisibleComments] = useState(false);
 
   const toggle = () => setOpen(!isOpen);
 
@@ -27,22 +30,32 @@ function Post({ user, post, like, dislike, deletePost, editPost, update }) {
     return new Date(string).toLocaleDateString([], options);
   }
 
-  return isVisible === true ? (
+  function wrapping(text) {
+    if (text.length > 200) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  return isVisibleEdit === true ? (
     <Card body inverse style={{ backgroundColor: "#333", borderColor: "#333" }}>
       <CardTitle>
-        <div class="post">
-          <span inline>
+        <div className="post">
+          <span inline="true">
             <Link to="profile/">{post.username}</Link>
-            <small>{"\t\t"} {formatDate(post.sharedTime)}</small>
+            <small>
+              {"\t\t"} {formatDate(post.sharedTime)}
+            </small>
           </span>
 
           {post.username === user.user.username ? (
-            <ButtonDropdown left isOpen={isOpen} toggle={toggle}>
+            <ButtonDropdown left="true" isOpen={isOpen} toggle={toggle}>
               <DropdownToggle size="sm">More</DropdownToggle>
               <DropdownMenu>
                 <DropdownItem
                   onClick={() => {
-                    setVisible(false);
+                    setVisibleEdit(false);
                   }}
                 >
                   Edit
@@ -65,8 +78,39 @@ function Post({ user, post, like, dislike, deletePost, editPost, update }) {
       </CardTitle>
       {/* <CardImg width="100%" src={post.imgUrl} alt="Card image cap" /> */}
       <CardBody>
-        <CardText>{post.text}</CardText>
-        <CardText>Likes : {post.likeCount}</CardText>
+        {wrapping(post.text) === true ? (
+          <CardText>
+            {readMore === false ? post.text.substr(0, 200) : post.text}
+            <Link
+              to=""
+              onClick={() => {
+                setReadMore(!readMore);
+              }}
+            >
+              {readMore === false ? " Read more..." : " Read less..."}
+            </Link>
+          </CardText>
+        ) : (
+          <CardText>{post.text}</CardText>
+        )}
+        <div className="post">
+          <CardText>
+            <Link to="" style={{ textDecoration: "none", color: "white" }}>
+              Likes : {post.likeCount}
+            </Link>
+          </CardText>
+          <CardText>
+            <Link
+              to=""
+              onClick={() => {
+                setVisibleComments(!isVisibleComments);
+              }}
+              style={{ textDecoration: "none", color: "white" }}
+            >
+              Comments : {post.commentCount}
+            </Link>
+          </CardText>
+        </div>
 
         {post.likes.some((u) => u.username === user.user.username) ? (
           <Button
@@ -95,13 +139,20 @@ function Post({ user, post, like, dislike, deletePost, editPost, update }) {
             Like
           </Button>
         )}
+
+        <ShareComment post={post}></ShareComment>
       </CardBody>
+      {isVisibleComments === false ? (
+        <div></div>
+      ) : (
+        <CommentList comments={post.comments}></CommentList>
+      )}
     </Card>
   ) : (
     <EditPost
       post={post}
-      isVisible={isVisible}
-      setVisible={setVisible}
+      isVisible={isVisibleEdit}
+      setVisible={setVisibleEdit}
     ></EditPost>
   );
 }

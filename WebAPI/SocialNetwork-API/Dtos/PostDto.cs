@@ -21,11 +21,13 @@ namespace SocialNetwork_API.Dtos
 
         public DateTime SharedTime { get; set; }
 
-        public ICollection<ObjectId> Comments { get; set; }
+        public List<CommentDto> Comments { get; set; }
 
         public List<LikeDto> Likes { get; set; }
 
         public int LikeCount { get; set; }
+
+        public int CommentCount { get; set; }
 
     }
 

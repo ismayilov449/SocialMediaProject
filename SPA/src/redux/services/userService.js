@@ -1,5 +1,5 @@
 export const userService = {
-  // login,
+  login,
   logout,
   register,
   //   getAll,
@@ -7,7 +7,6 @@ export const userService = {
   //   update,
   //   delete: _delete,
 };
-
 
 function login(username, password) {
   const requestOptions = {

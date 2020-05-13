@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace SocialNetwork_API.Helpers
 {
-    public class ListCommentsResolver : IValueResolver<Post, PostDetailsDto, ICollection<CommentDto>>
+    public class ListCommentsResolver : IValueResolver<Post, PostDto, List<CommentDto>>
     {
         private IUnitOfWork _uow;
         private IMapper _mapper;
@@ -20,10 +20,11 @@ namespace SocialNetwork_API.Helpers
             _mapper = mapper;
         }
 
-        public ICollection<CommentDto> Resolve(Post source, PostDetailsDto destination, ICollection<CommentDto> destMember, ResolutionContext context)
+        public List<CommentDto> Resolve(Post source, PostDto destination, List<CommentDto> destMember, ResolutionContext context)
         {
             var comments = _uow.Comments.GetAll().Where(i => i.PostId == source.Id);
             return _mapper.Map<IEnumerable<CommentDto>>(comments).ToList();
         }
+
     }
 }

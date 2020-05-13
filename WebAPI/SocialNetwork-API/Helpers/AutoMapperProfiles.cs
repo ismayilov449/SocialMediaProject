@@ -50,6 +50,10 @@ namespace SocialNetwork_API.Helpers
                 exp => exp.MapFrom<PostDetailUsernameResolver>())
                 .ForMember(obj => obj.LikeCount,
                 exp => exp.MapFrom<LikeCountResolver>())
+                .ForMember(obj => obj.CommentCount,
+                exp => exp.MapFrom<CommentCountResolver>())
+                .ForMember(obj => obj.Comments,
+                exp => exp.MapFrom<ListCommentsResolver>())
                 .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
 
 
@@ -89,6 +93,9 @@ namespace SocialNetwork_API.Helpers
               }).ForMember(dest => dest.UserId, opt =>
               {
                   opt.MapFrom(src => src.UserId.ToString());
+              }).ForMember(dest => dest.Username, opt =>
+              {
+                  opt.MapFrom<CommentDtoUsernameResolver>();
               }).ForMember(dest => dest.SharedTime, opt =>
               {
                   opt.MapFrom(src => DateTime.UtcNow);
@@ -97,20 +104,20 @@ namespace SocialNetwork_API.Helpers
                   opt.MapFrom(src => src.Id.ToString());
               }).ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
 
-
             CreateMap<Post, PostDetailsDto>()
                   .ForMember(dest => dest.Id, opt =>
                   {
                       opt.MapFrom(src => src.Id.ToString());
-                  }).ForMember(dest => dest.Comments, opt =>
-                  {
-                      opt.MapFrom<ListCommentsResolver>();
-
                   }).ForMember(dest => dest.Username, opt =>
                   {
                       opt.MapFrom(src => src.Username);
                   }).ForMember(dest => dest.Likes, opt => opt.MapFrom<PostDetailLikeResolver>()).ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
 
+            //.ForMember(dest => dest.Comments, opt =>
+            // {
+            //     opt.MapFrom<ListCommentsResolver>();
+
+            // })
 
             //CreateMap<Like, LikeDto>()
             //     .ForMember(dest => dest.Id, opt =>

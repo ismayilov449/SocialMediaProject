@@ -1,4 +1,4 @@
-import React, { Component, useState } from "react";
+import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { userActions } from "../../redux/actions/userActions";
 import { history } from "../../redux/services/helper/history";
@@ -7,7 +7,6 @@ import { bindActionCreators } from "redux";
 import {
   Collapse,
   Navbar,
-  NavbarToggler,
   NavbarBrand,
   Nav,
   NavItem,
@@ -16,7 +15,6 @@ import {
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
-  Button,
 } from "reactstrap";
 import { connect } from "react-redux";
 import "../posts/PostStyle.css";
@@ -44,9 +42,9 @@ class Navi extends Component {
     return (
       <div>
         <Navbar color="light" light expand="md">
-          <div class="post">
+          <div className="post">
             <NavbarBrand>
-              <Link to="/">Northwind</Link>
+              <Link to="/home">Northwind</Link>
             </NavbarBrand>
             {/* {console.log(this.props.user)} */}
             <Collapse navbar>
@@ -74,6 +72,7 @@ class Navi extends Component {
                                   this.props.actions.logout();
                                   history.push("/");
                                 }}
+                                to=""
                               >
                                 Logout
                               </Link>{" "}

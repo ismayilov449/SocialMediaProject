@@ -92,7 +92,7 @@ namespace SocialNetwork_API.Controllers
                 currPost.ImgId = new ObjectId(post.ImgId);
                 currPost.SharedTime = post.SharedTime;
                 currPost.Text = post.Text;
-                currPost.Comments = post.Comments;
+                currPost.Comments = post.Comments.ToList().Select(i => new ObjectId(i.Id)).ToList();
 
                 _uow.Posts.Edit(currPost);
             }
