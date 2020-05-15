@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Card,
   Button,
@@ -15,6 +15,11 @@ import { Link } from "react-router-dom";
 import "../posts/PostStyle.css";
 
 function Comment({ user, comment, deleteComment, editComment, update }) {
+  const [isOpen, setOpen] = useState(false);
+  let [isVisibleEdit, setVisibleEdit] = useState(true);
+
+  const toggle = () => setOpen(!isOpen);
+
   function formatDate(string) {
     var options = { year: "numeric", month: "long", day: "numeric" };
     return new Date(string).toLocaleDateString([], options);
@@ -30,14 +35,14 @@ function Comment({ user, comment, deleteComment, editComment, update }) {
     >
       <CardTitle>
         <div className="post">
-          <span inline='true'>
+          <span inline="true">
             <Link to="profile/">{comment.username}</Link>
             <small>
               {"\t\t"} {formatDate(comment.sharedTime)}
             </small>
           </span>
 
-          {/* {post.username === user.user.username ? (
+          {comment.username === user.user.username ? (
             <ButtonDropdown left isOpen={isOpen} toggle={toggle}>
               <DropdownToggle size="sm">More</DropdownToggle>
               <DropdownMenu>
@@ -51,7 +56,7 @@ function Comment({ user, comment, deleteComment, editComment, update }) {
                 <DropdownItem
                   onClick={() => {
                     update();
-                    deletePost(post.id);
+                    deleteComment(comment.id);
                     update();
                   }}
                 >
@@ -61,7 +66,7 @@ function Comment({ user, comment, deleteComment, editComment, update }) {
             </ButtonDropdown>
           ) : (
             <div></div>
-          )} */}
+          )}
         </div>
       </CardTitle>
 

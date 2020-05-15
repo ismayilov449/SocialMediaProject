@@ -13,6 +13,7 @@ namespace SocialNetwork_API.DAL.Abstract
         ObjectId GetUserId(string username);
         User GetUser(ObjectId objectId);
         string GetUsername(ObjectId id);
+        Task<IEnumerable<User>> GetUserByUsername(string username);
         void UpdateUser(User user, ObjectId id);
         Task<User> Register(User user, string password);
         Task<User> Login(string userName, string password);

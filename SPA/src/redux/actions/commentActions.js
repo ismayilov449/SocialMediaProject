@@ -4,6 +4,7 @@ import { authHeader } from "../services/helper/authHeader";
 export const commentActions = {
   //getAll,
   addComment,
+  deleteComment,
 };
 
 function addComment(comment) {
@@ -45,17 +46,46 @@ function addComment_success(comment) {
     });
 }
 
-// function getAll() {}
+function deleteComment(commentId) {
+  return (dispatch) => {
+    dispatch(request(commentId));
 
-// function getAll_success() {
-//   let url = "http://localhost:5000/api/post/getall";
+    deleteComment_success(commentId).then(
+      (commentId) => {
+        dispatch(success(commentId));
+      },
+      (error) => {
+        dispatch(failure(error.toString()));
+      }
+    );
+  };
 
-//   return fetch(url)
-//     .then(handleResponse)
-//     .then((data) => {
-//       return data;
-//     });
-// }
+  function request(commentId) {
+    return { type: ACTIONTYPES.DELETECOMMENT_REQUEST, commentId };
+  }
+  function success(commentId) {
+    return { type: ACTIONTYPES.DELETECOMMENT_SUCCESS, commentId };
+  }
+  function failure(error) {
+    return { type: ACTIONTYPES.DELETECOMMENT_FAILURE, error };
+  }
+}
+
+function deleteComment_success(commentId) {
+  const requestOptions = {
+    method: "DELETE",
+    headers: { ...authHeader(), "Content-Type": "application/json" },
+  };
+
+  return fetch(
+    "http://localhost:5000/api/comment/removecomment/" + commentId,
+    requestOptions
+  )
+    .then(handleResponse)
+    .then((data) => {
+      return data;
+    });
+}
 
 function handleResponse(response) {
   return response.text().then((text) => {

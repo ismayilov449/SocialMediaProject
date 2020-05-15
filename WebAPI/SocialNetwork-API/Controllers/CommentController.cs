@@ -66,7 +66,11 @@ namespace SocialNetwork_API.Controllers
             if (currComment.UserId == currUserId)
             {
                 _uow.Comments.Delete(currComment);
-                _uow.Posts.Find(x => x.Id == currComment.PostId).FirstOrDefault().Comments.Remove(currComment.Id);
+                var currPost = _uow.Posts.Find(x => x.Id == currComment.PostId).FirstOrDefault();
+
+                currPost.Comments.Remove(currComment.Id);
+                _uow.Posts.Edit(currPost);
+
 
                 return Ok();
             }

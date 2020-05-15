@@ -2,11 +2,13 @@ import * as ACTIONTYPES from "../actions/actionTypes";
 import { userService } from "../services/userService";
 import { history } from "../../redux/services/helper/history";
 import initialState from "../../redux/reducers/initialState";
+import { authHeader } from "../services/helper/authHeader";
 
 export const userActions = {
   login,
   logout,
   register,
+  find,
 };
 
 //with userService.js
@@ -147,6 +149,45 @@ function register_success(user) {
   return fetch("http://localhost:5000/api/auth/register", requestOptions).then(
     handleResponse
   );
+}
+
+function find(username) {
+  return (dispatch) => {
+    dispatch(request(username));
+
+    find_success(username).then(
+      (username) => {
+        dispatch(success(username));
+      },
+      (error) => {
+        dispatch(failure(error.toString()));
+      }
+    );
+  };
+
+  function request(user) {
+    return { type: ACTIONTYPES.FIND_REQUEST, user };
+  }
+  function success(user) {
+    return { type: ACTIONTYPES.FIND_SUCCESS, user };
+  }
+  function failure(error) {
+    return { type: ACTIONTYPES.FIND_FAILURE, error };
+  }
+}
+
+function find_success(username) {
+  const requestOptions = {
+    method: "GET",
+    headers: { ...authHeader(), "Content-Type": "application/json" },
+    body: JSON.stringify({ username }),
+  };
+ 
+  return fetch("http://localhost:5000/api/auth/find", requestOptions)
+    .then(handleResponse)
+    .then((user) => {
+      return user;
+    });
 }
 
 function handleResponse(response) {

@@ -48,6 +48,14 @@ namespace SocialNetwork_API.DAL.Concrete.MongoDB
             return username;
 
         }
+
+        public async Task<IEnumerable<User>> GetUserByUsername(string username)
+        {
+            var users = await _users.Find(x => x.Username.Contains(username)).ToListAsync();
+
+            return users;
+        }
+
         public async Task<User> Login(string userName, string password)
         {
 

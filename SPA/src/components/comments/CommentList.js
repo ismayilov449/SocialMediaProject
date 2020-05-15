@@ -1,8 +1,12 @@
 import React, { Component } from "react";
 import { ListGroup, ListGroupItem } from "reactstrap";
 import Comment from "../comments/Comment";
+import { commentActions } from "../../redux/actions/commentActions";
+import { postActions } from "../../redux/actions/postActions";
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
 
-export default class CommentList extends Component {
+class CommentList extends Component {
   render() {
     return (
       <div>
@@ -15,11 +19,11 @@ export default class CommentList extends Component {
               <Comment
                 user={this.props.user}
                 comment={comment}
+                deleteComment={this.props.actions.deleteComment}
+                update={this.props.actions.getAll}
                 // like={this.props.actions.like}
                 // dislike={this.props.actions.dislike}
-                // deletePost={this.props.actions.deletePost}
                 // editPost={this.props.actions.editPost}
-                // update={this.props.actions.getAll}
               ></Comment>
             </ListGroupItem>
           ))}
@@ -28,3 +32,18 @@ export default class CommentList extends Component {
     );
   }
 }
+
+function mapStateToProps(state) {
+  return {};
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: {
+      deleteComment: bindActionCreators(commentActions.deleteComment, dispatch),
+      getAll: bindActionCreators(postActions.getAll, dispatch),
+    },
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(CommentList);

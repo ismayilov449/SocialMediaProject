@@ -16,7 +16,7 @@ using SocialNetwork_API.Models;
 
 namespace SocialNetwork_API.Controllers
 {
-    
+
     [Route("api/[controller]")]
     [ApiController]
     public class AuthController : ControllerBase
@@ -71,7 +71,21 @@ namespace SocialNetwork_API.Controllers
             var tokenString = TokenManager.GenerateToken(userForLoginDto, user.Id, _configuration);
 
 
-            return Ok(new { tokenString , user});
+            return Ok(new { tokenString, user });
+        }
+
+        [HttpGet("find")]
+        public async Task<ActionResult> Find([FromBody]string username)
+        {
+            var users = await _authRepository.GetUserByUsername(username);
+
+            if (users == null)
+            {
+                return null;
+            }
+
+            return Ok(users);
+
         }
 
     }

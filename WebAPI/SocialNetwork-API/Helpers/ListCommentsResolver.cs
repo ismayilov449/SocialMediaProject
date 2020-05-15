@@ -23,6 +23,7 @@ namespace SocialNetwork_API.Helpers
         public List<CommentDto> Resolve(Post source, PostDto destination, List<CommentDto> destMember, ResolutionContext context)
         {
             var comments = _uow.Comments.GetAll().Where(i => i.PostId == source.Id);
+            comments = comments.OrderByDescending(i => i.SharedTime);
             return _mapper.Map<IEnumerable<CommentDto>>(comments).ToList();
         }
 

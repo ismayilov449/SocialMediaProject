@@ -9,6 +9,7 @@ import {
   InputGroupAddon,
 } from "reactstrap";
 import { commentActions } from "../../redux/actions/commentActions";
+import { postActions } from "../../redux/actions/postActions";
 import { history } from "../../redux/services/helper/history";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -25,10 +26,12 @@ class ShareComment extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-
+    this.props.actions.getAll();
     this.setState({ postId: this.props.post.id });
     this.props.actions.addComment(this.state);
+
     history.push("/");
+    this.props.actions.getAll();
   }
 
   render() {
@@ -78,6 +81,7 @@ function mapDispatchToProps(dispatch) {
   return {
     actions: {
       addComment: bindActionCreators(commentActions.addComment, dispatch),
+      getAll: bindActionCreators(postActions.getAll, dispatch),
     },
   };
 }

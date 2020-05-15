@@ -1,0 +1,6 @@
+.navi {
+  display: flex;
+  justify-content: space-between;
+  align-items: inherit;
+  margin-left: auto;
+}

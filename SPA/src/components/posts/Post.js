@@ -17,10 +17,10 @@ import EditPost from "./EditPost";
 import ShareComment from "../comments/ShareComment";
 import CommentList from "../comments/CommentList";
 
-function Post({ user, post, like, dislike, deletePost, editPost, update }) {
+function Post({ user, post, like, dislike, deletePost, update }) {
+  let [readMore, setReadMore] = useState(false);
   const [isOpen, setOpen] = useState(false);
   let [isVisibleEdit, setVisibleEdit] = useState(true);
-  let [readMore, setReadMore] = useState(false);
   let [isVisibleComments, setVisibleComments] = useState(false);
 
   const toggle = () => setOpen(!isOpen);
@@ -145,7 +145,7 @@ function Post({ user, post, like, dislike, deletePost, editPost, update }) {
       {isVisibleComments === false ? (
         <div></div>
       ) : (
-        <CommentList comments={post.comments}></CommentList>
+        <CommentList comments={post.comments} user={user}></CommentList>
       )}
     </Card>
   ) : (
