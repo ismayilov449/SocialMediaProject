@@ -14,6 +14,9 @@ class Timeline extends Component {
   componentDidMount() {
     this.props.actions.getAll();
     this.setState({ posts: this.props.posts });
+    console.log(this.props.profile)
+    console.log(this.props.specPosts)
+
   }
 
   render() {

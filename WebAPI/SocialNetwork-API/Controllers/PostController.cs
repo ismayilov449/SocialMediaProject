@@ -53,6 +53,18 @@ namespace SocialNetwork_API.Controllers
             return Ok(postsToReturn);
         }
 
+        [HttpGet]
+        [Route("getuserposts/{username}")]
+        public ActionResult GetSpecUserPosts(string username)
+        {
+            //var currUserId = new ObjectId(User.Claims.ToList().FirstOrDefault(i => i.Type == "UserId").Value);
+
+            var currUserPosts = _uow.Posts.Find(x => x.Username == username);
+            var postsToReturn = _mapper.Map<IEnumerable<PostDto>>(currUserPosts);
+
+            return Ok(postsToReturn);
+        }
+
         [HttpPost]
         [Route("sharepost")]
         public ActionResult SharePost([FromBody]Post post)

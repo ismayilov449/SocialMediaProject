@@ -5,12 +5,12 @@ export default function foundedUsersReducer(state = initialState.foundedUsers, a
   switch (action.type) {
     case ACTIONTYPES.FIND_REQUEST:
       return {
-        users: action.user,
+        users: action.users,
       };
 
     case ACTIONTYPES.FIND_SUCCESS:
       return {
-        users: action.user,
+        users: action.users,
       };
 
     case ACTIONTYPES.FIND_FAILURE:

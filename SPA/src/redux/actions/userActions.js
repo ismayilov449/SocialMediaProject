@@ -165,11 +165,11 @@ function find(username) {
     );
   };
 
-  function request(user) {
-    return { type: ACTIONTYPES.FIND_REQUEST, user };
+  function request(users) {
+    return { type: ACTIONTYPES.FIND_REQUEST, users };
   }
-  function success(user) {
-    return { type: ACTIONTYPES.FIND_SUCCESS, user };
+  function success(users) {
+    return { type: ACTIONTYPES.FIND_SUCCESS, users };
   }
   function failure(error) {
     return { type: ACTIONTYPES.FIND_FAILURE, error };
@@ -179,11 +179,11 @@ function find(username) {
 function find_success(username) {
   const requestOptions = {
     method: "GET",
-    headers: { ...authHeader(), "Content-Type": "application/json" },
-    body: JSON.stringify({ username }),
+    headers: { "Content-Type": "application/json" },
+    
   };
- 
-  return fetch("http://localhost:5000/api/auth/find", requestOptions)
+
+  return fetch("http://localhost:5000/api/auth/find/"+username, requestOptions)
     .then(handleResponse)
     .then((user) => {
       return user;
@@ -191,6 +191,7 @@ function find_success(username) {
 }
 
 function handleResponse(response) {
+
   return response.text().then((text) => {
     const data = text && JSON.parse(text);
     if (!response.ok) {

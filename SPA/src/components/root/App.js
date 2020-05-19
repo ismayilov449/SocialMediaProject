@@ -7,6 +7,7 @@ import Login from "../auth/Login";
 import Register from "../auth/Register";
 import RegisterPage from "../auth/RegisterPage";
 import { PrivateRoute } from "../root/PrivateRoot";
+import Profile from "../profile/Profile";
 import Timeline from "../posts/Timeline";
 import { history } from "../../redux/services/helper/history";
 import NotFound from "../common/NotFound";
@@ -21,6 +22,13 @@ function App() {
             <PrivateRoute exact path="/" component={Timeline} />
             <Route path="/login" component={Login} />
             <Route path="/register" component={Register} />
+            <Route
+              path="/profile/:username?"
+              // component={Profile}
+              render={(props) => (
+                <Profile username={props.match.params.username} {...props} />
+              )}
+            />
             {/* <Redirect from="*" to="/" /> */}
             <Route component={NotFound} />
           </Switch>

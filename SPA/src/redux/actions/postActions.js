@@ -8,6 +8,7 @@ export const postActions = {
   likePost,
   dislikePost,
   deletePost,
+  getSpecPosts,
 };
 
 function getAll() {
@@ -39,6 +40,47 @@ function getAll_success() {
   let url = "http://localhost:5000/api/post/getall";
 
   return fetch(url)
+    .then(handleResponse)
+    .then((data) => {
+      return data;
+    });
+}
+
+function getSpecPosts(username) {
+  return (dispatch) => {
+    dispatch(request());
+
+    getSpecPosts_success(username).then(
+      (posts) => {
+        dispatch(success(posts));
+      },
+      (error) => {
+        dispatch(failure(error.toString()));
+      }
+    );
+  };
+
+  function request() {
+    return { type: ACTIONTYPES.GETSPECPOST_REQUEST };
+  }
+  function success(posts) {
+    return { type: ACTIONTYPES.GETSPECPOST_SUCCESS, posts };
+  }
+  function failure(error) {
+    return { type: ACTIONTYPES.GETSPECPOST_FAILURE, error };
+  }
+}
+
+function getSpecPosts_success(username) {
+  const requestOptions = {
+    method: "GET",
+    headers: { ...authHeader(), "Content-Type": "application/json" },
+  };
+
+  return fetch(
+    "http://localhost:5000/api/post/getuserposts/" + username,
+    requestOptions
+  )
     .then(handleResponse)
     .then((data) => {
       return data;

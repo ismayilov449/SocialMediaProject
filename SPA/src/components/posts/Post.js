@@ -31,7 +31,7 @@ function Post({ user, post, like, dislike, deletePost, update }) {
   }
 
   function wrapping(text) {
-    if (text.length > 200) {
+    if (text.length > 300) {
       return true;
     } else {
       return false;

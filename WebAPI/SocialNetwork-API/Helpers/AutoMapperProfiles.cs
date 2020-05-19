@@ -98,7 +98,7 @@ namespace SocialNetwork_API.Helpers
                   opt.MapFrom<CommentDtoUsernameResolver>();
               }).ForMember(dest => dest.SharedTime, opt =>
               {
-                  opt.MapFrom(src => DateTime.UtcNow);
+                  opt.MapFrom(src => src.SharedTime);
               }).ForMember(dest => dest.Id, opt =>
               {
                   opt.MapFrom(src => src.Id.ToString());

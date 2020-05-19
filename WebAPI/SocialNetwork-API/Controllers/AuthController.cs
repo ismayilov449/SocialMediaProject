@@ -74,8 +74,9 @@ namespace SocialNetwork_API.Controllers
             return Ok(new { tokenString, user });
         }
 
-        [HttpGet("find")]
-        public async Task<ActionResult> Find([FromBody]string username)
+        [HttpGet]
+        [Route("find/{username}")]
+        public async Task<ActionResult> Find(string username)
         {
             var users = await _authRepository.GetUserByUsername(username);
 
