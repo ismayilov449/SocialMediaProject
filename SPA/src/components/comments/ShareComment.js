@@ -26,12 +26,15 @@ class ShareComment extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    this.props.actions.getAll();
     this.setState({ postId: this.props.post.id });
     this.props.actions.addComment(this.state);
 
-    history.push("/");
-    this.props.actions.getAll();
+    this.props.inProfile === false
+      ? this.props.actions.getAll() &&
+        this.props.actions.getAll() &&
+        history.push("/")
+      : this.props.actions.getUserPosts(this.props.post.username) &&
+        this.props.actions.getUserPosts(this.props.post.username);
   }
 
   render() {
@@ -55,6 +58,12 @@ class ShareComment extends Component {
                   name="text"
                   id="text"
                   placeholder="Comment"
+                  style={{
+                    background: "#4e4f50",
+                    color: "white",
+                    fontSize: "20px",
+                    borderWidth: "0",
+                  }}
                   onChange={(e) => {
                     this.setState({ text: e.target.value });
                   }}
@@ -82,6 +91,7 @@ function mapDispatchToProps(dispatch) {
     actions: {
       addComment: bindActionCreators(commentActions.addComment, dispatch),
       getAll: bindActionCreators(postActions.getAll, dispatch),
+      getUserPosts: bindActionCreators(postActions.getSpecPosts, dispatch),
     },
   };
 }

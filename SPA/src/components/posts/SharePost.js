@@ -9,33 +9,46 @@ class SharePost extends Component {
   state = {
     text: "",
     posts: [],
+    history: "",
   };
 
   componentDidMount() {
-    this.props.actions.getAll();
+    if (this.props.username === undefined) {
+      this.props.actions.getAll();
+    }
+
+    this.setState({ history: history });
   }
 
   render() {
     return (
       <div>
-        <h2>What do you think hmm.. ?</h2>
         <Form
+          style={{ background: "#242526", borderRadius: "5px" }}
           onSubmit={(e) => {
             e.preventDefault();
-            
-            this.props.actions.getAll();
+
             this.props.actions.sharePost(this.state);
-            history.push("/");
-            this.props.actions.getAll();
+            this.props.username === undefined
+              ? (this.props.actions.getAll() || this.props.actions.getAll()) &&
+                history.push("/")
+              : this.props.actions.getUserPosts(this.props.username);
           }}
         >
           <FormGroup row>
             <Col sm={7}>
               <Input
-                type="textarea"
+                type="text"
                 name="text"
-                id="text"
-                placeholder="Type here"
+                id="textarea"
+                placeholder="What do you think hmm.. ?"
+                style={{
+                  background: "#4e4f50",
+                  color: "white",
+                  fontSize: "20px",
+                  borderWidth: "0",
+                  borderRadius: "20px",
+                }}
                 onChange={(e) => {
                   this.setState({ text: e.target.value });
                 }}
@@ -61,6 +74,7 @@ function mapDispatchToProps(dispatch) {
     actions: {
       getAll: bindActionCreators(postActions.getAll, dispatch),
       sharePost: bindActionCreators(postActions.sharePost, dispatch),
+      getUserPosts: bindActionCreators(postActions.getSpecPosts, dispatch),
     },
   };
 }

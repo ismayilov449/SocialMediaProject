@@ -20,8 +20,8 @@ namespace SocialNetwork_API.Models
 
         public ICollection<ObjectId> Posts { get; set; }
         public ICollection<ObjectId> Likes { get; set; }
+        public ICollection<Request> Requests { get; set; }
 
-        //    public ICollection<User> Friends { get; set; }
     }
 }
 

@@ -14,8 +14,8 @@ import NotFound from "../common/NotFound";
 
 function App() {
   return (
-    <div>
-      <Container>
+    <div style={{ width : 'max',height : 'max', background: "#18191a" }}>
+      <Container style={{ maxWidth: "auto", background: "#18191a" }}>
         <Navi></Navi>
         <Router history={history}>
           <Switch>
@@ -26,7 +26,7 @@ function App() {
               path="/profile/:username?"
               // component={Profile}
               render={(props) => (
-                <Profile username={props.match.params.username} {...props} />
+                <Profile username={props.match.params.username} />
               )}
             />
             {/* <Redirect from="*" to="/" /> */}

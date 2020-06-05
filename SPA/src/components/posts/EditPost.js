@@ -12,7 +12,6 @@ class EditPost extends Component {
   };
 
   componentDidMount() {
-    this.props.actions.getAll();
     document.getElementById("editPostText").defaultValue = this.props.post.text;
   }
 
@@ -26,7 +25,9 @@ class EditPost extends Component {
             this.props.actions.editPost(this.props.post);
             this.props.setVisible(true);
 
-            history.replace("/");
+            this.props.inProfile === true
+              ? history.push("/profile/" + this.props.post.username)
+              : history.push("/");
           }}
         >
           <FormGroup row>

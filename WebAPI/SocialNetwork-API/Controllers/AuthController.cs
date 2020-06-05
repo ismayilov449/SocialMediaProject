@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -55,6 +56,7 @@ namespace SocialNetwork_API.Controllers
             return StatusCode(201);
 
         }
+
 
 
         [HttpPost("login")]

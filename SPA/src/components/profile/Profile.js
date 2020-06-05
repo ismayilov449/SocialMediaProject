@@ -3,6 +3,10 @@ import { bindActionCreators } from "redux";
 import { postActions } from "../../redux/actions/postActions";
 import { connect } from "react-redux";
 import Timeline from "../posts/Timeline";
+import ProfileHeader from "./ProfileHeader";
+import { Col, Row } from "reactstrap";
+import ProfileIntro from "./ProfileIntro";
+import "../profile/profileStyle.css";
 
 class Profile extends Component {
   state = {
@@ -10,25 +14,18 @@ class Profile extends Component {
     posts: [],
   };
 
-  componentWillMount() {
-    this.props.actions.getUserPosts(this.props.username);
-  }
-
-  componentDidMount() {
-    this.props.actions.getUserPosts(this.props.username);
-
-    this.setState({
-      posts: this.props.posts,
-    });
-  }
-
   render() {
     return (
       <div>
-        <Timeline
-          specPosts={this.state.posts}
-          profile={this.state.profile}
-        ></Timeline>
+        <ProfileHeader username={this.props.username}></ProfileHeader>
+        <Row>
+          <Col xs="4">
+            <ProfileIntro></ProfileIntro>
+          </Col>
+          <Col xs="8">
+            <Timeline username={this.props.username}></Timeline>
+          </Col>
+        </Row>
       </div>
     );
   }

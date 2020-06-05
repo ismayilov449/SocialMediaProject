@@ -53,6 +53,7 @@ function getSpecPosts(username) {
     getSpecPosts_success(username).then(
       (posts) => {
         dispatch(success(posts));
+        // console.log(posts);
       },
       (error) => {
         dispatch(failure(error.toString()));
@@ -63,8 +64,8 @@ function getSpecPosts(username) {
   function request() {
     return { type: ACTIONTYPES.GETSPECPOST_REQUEST };
   }
-  function success(posts) {
-    return { type: ACTIONTYPES.GETSPECPOST_SUCCESS, posts };
+  function success(userPosts) {
+    return { type: ACTIONTYPES.GETSPECPOST_SUCCESS, userPosts };
   }
   function failure(error) {
     return { type: ACTIONTYPES.GETSPECPOST_FAILURE, error };
@@ -83,6 +84,7 @@ function getSpecPosts_success(username) {
   )
     .then(handleResponse)
     .then((data) => {
+      console.log(data);
       return data;
     });
 }

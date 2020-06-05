@@ -12,12 +12,22 @@ import {
 } from "reactstrap";
 
 import { Link } from "react-router-dom";
+import { history } from "../../redux/services/helper/history";
 import "../posts/PostStyle.css";
 import EditPost from "./EditPost";
 import ShareComment from "../comments/ShareComment";
 import CommentList from "../comments/CommentList";
 
-function Post({ user, post, like, dislike, deletePost, update }) {
+function Post({
+  inProfile,
+  user,
+  post,
+  like,
+  dislike,
+  deletePost,
+  update,
+  updateWithUser,
+}) {
   let [readMore, setReadMore] = useState(false);
   const [isOpen, setOpen] = useState(false);
   let [isVisibleEdit, setVisibleEdit] = useState(true);
@@ -39,11 +49,27 @@ function Post({ user, post, like, dislike, deletePost, update }) {
   }
 
   return isVisibleEdit === true ? (
-    <Card body inverse style={{ backgroundColor: "#333", borderColor: "#333" }}>
+    <Card
+      body
+      inverse
+      style={{
+        backgroundColor: "#242526",
+        borderColor: "#242526",
+        padding: "0px",
+      }}
+    >
       <CardTitle>
         <div className="post">
           <span inline="true">
-            <Link to="profile/">{post.username}</Link>
+            <Link
+              to={"/profile/" + post.username}
+              onClick={() => {
+                var url = "/profile/" + post.username;
+                history.push(url);
+              }}
+            >
+              {post.username}
+            </Link>
             <small>
               {"\t\t"} {formatDate(post.sharedTime)}
             </small>
@@ -62,9 +88,12 @@ function Post({ user, post, like, dislike, deletePost, update }) {
                 </DropdownItem>
                 <DropdownItem
                   onClick={() => {
-                    update();
                     deletePost(post.id);
-                    update();
+                    deletePost(post.id);
+                    inProfile === true
+                      ? updateWithUser(post.username) ||
+                        updateWithUser(post.username)
+                      : update();
                   }}
                 >
                   Delete
@@ -102,7 +131,8 @@ function Post({ user, post, like, dislike, deletePost, update }) {
           <CardText>
             <Link
               to=""
-              onClick={() => {
+              onClick={(e) => {
+                e.preventDefault();
                 setVisibleComments(!isVisibleComments);
               }}
               style={{ textDecoration: "none", color: "white" }}
@@ -117,10 +147,8 @@ function Post({ user, post, like, dislike, deletePost, update }) {
             outline
             color="info"
             onClick={() => {
-              update();
-
               dislike(post.id);
-              update();
+              inProfile === true ? updateWithUser(post.username) : update();
             }}
           >
             Dislike
@@ -130,27 +158,31 @@ function Post({ user, post, like, dislike, deletePost, update }) {
             outline
             color="info"
             onClick={() => {
-              update();
-
               like(post.id);
-              update();
+              inProfile === true ? updateWithUser(post.username) : update();
             }}
           >
             Like
           </Button>
         )}
 
-        <ShareComment post={post}></ShareComment>
+        <ShareComment post={post} inProfile={inProfile}></ShareComment>
+        <br />
       </CardBody>
       {isVisibleComments === false ? (
         <div></div>
       ) : (
-        <CommentList comments={post.comments} user={user}></CommentList>
+        <CommentList
+          comments={post.comments}
+          user={user}
+          inProfile={inProfile}
+        ></CommentList>
       )}
     </Card>
   ) : (
     <EditPost
       post={post}
+      inProfile={inProfile}
       isVisible={isVisibleEdit}
       setVisible={setVisibleEdit}
     ></EditPost>

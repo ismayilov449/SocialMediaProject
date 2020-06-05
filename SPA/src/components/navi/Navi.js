@@ -39,6 +39,8 @@ class Navi extends Component {
     this.setState({ user: currUser });
     this.props.actions.find();
     this.setState({ popoverOpen: false });
+    this.props.actions.find();
+
     //console.log(this.props.user);
   }
 
@@ -65,10 +67,20 @@ class Navi extends Component {
   render() {
     return (
       <div>
-        <Navbar color="light" light expand="md">
+        <Navbar
+          style={{
+            background: "#242526",
+            borderBottomWidth: "1px",
+            borderBottomStyle: "solid",
+            borderBottomColor: "white",
+          }}
+          expand="md"
+        >
           <div className="post">
             <NavbarBrand>
-              <Link to="/home">Home</Link>
+              <Link to="/" onClick={() => history.push("/")}>
+                Home
+              </Link>
             </NavbarBrand>
             {/* {console.log(this.props.user)} */}
             {/* <Collapse navbar> */}
@@ -89,9 +101,17 @@ class Navi extends Component {
                           id="text"
                           placeholder="Find users"
                           autoComplete="off"
+                          style={{
+                            background: "#4e4f50",
+                            color: "white",
+                            fontSize: "15px",
+                            borderWidth: "0",
+                            borderRadius: "20px",
+                          }}
                           onChange={(e) => {
                             if (e.target.value.length > 0) {
                               this.props.actions.find(e.target.value);
+
                               this.setState({ foundedUsers: this.props.users });
                             } else {
                               this.setState({ foundedUsers: [] });
@@ -126,7 +146,7 @@ class Navi extends Component {
                                 ))}
                               </div>
                             ) : (
-                              <div></div>
+                              <PopoverBody>No matches</PopoverBody>
                             )}
                           </Popover>
                         ) : (

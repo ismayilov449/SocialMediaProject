@@ -15,6 +15,8 @@ namespace SocialNetwork_API.DAL.Abstract
 
         ILikeRepository Likes { get; }
 
+       // IRequestRepository Requests { get; }
+
         //IFriendsRepository Friends { get; }
 
         //IMessageRepository Messages { get; }

@@ -25,6 +25,8 @@ namespace SocialNetwork_API.Dtos
 
         public List<LikeDto> Likes { get; set; }
 
+        public List<Request> Requests { get; set; }
+
         public int LikeCount { get; set; }
 
         public int CommentCount { get; set; }

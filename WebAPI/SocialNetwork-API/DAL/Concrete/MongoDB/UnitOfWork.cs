@@ -24,6 +24,8 @@ namespace SocialNetwork_API.DAL.Concrete.MongoDB
 
         public ILikeRepository _likes { get; set; }
 
+        //public IRequestRepository _requests { get; set; }
+
         public IPostRepository Posts
         {
             get
@@ -55,6 +57,14 @@ namespace SocialNetwork_API.DAL.Concrete.MongoDB
                 return _likes ?? (_likes = new LikeRepository(settings));
             }
         }
+
+        //public IRequestRepository Requests
+        //{
+        //    get
+        //    {
+        //        return _requests ?? (_requests = new RequestRepository(settings));
+        //    }
+        //}
 
 
     }

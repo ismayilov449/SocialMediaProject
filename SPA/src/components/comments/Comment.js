@@ -11,10 +11,20 @@ import {
   DropdownToggle,
 } from "reactstrap";
 
+import { history } from "../../redux/services/helper/history";
+
 import { Link } from "react-router-dom";
 import "../posts/PostStyle.css";
 
-function Comment({ user, comment, deleteComment, editComment, update }) {
+function Comment({
+  inProfile,
+  user,
+  comment,
+  deleteComment,
+  editComment,
+  update,
+  updateWithUser,
+}) {
   const [isOpen, setOpen] = useState(false);
   let [isVisibleEdit, setVisibleEdit] = useState(true);
 
@@ -36,7 +46,13 @@ function Comment({ user, comment, deleteComment, editComment, update }) {
       <CardTitle>
         <div className="post">
           <span inline="true">
-            <Link to="profile/">{comment.username}</Link>
+            <Link
+              to={"/profile/" + comment.username}
+              onClick={() => {
+                var url = "/profile/" + comment.username;
+                history.push(url);
+              }}
+            ></Link>
             <small>
               {"\t\t"} {formatDate(comment.sharedTime)}
             </small>
@@ -55,9 +71,11 @@ function Comment({ user, comment, deleteComment, editComment, update }) {
                 </DropdownItem>
                 <DropdownItem
                   onClick={() => {
-                    update();
                     deleteComment(comment.id);
-                    update();
+                    inProfile === true
+                      ? updateWithUser(comment.username) &&
+                        updateWithUser(comment.username)
+                      : update() && update();
                   }}
                 >
                   Delete

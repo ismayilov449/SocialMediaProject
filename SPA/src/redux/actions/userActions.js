@@ -179,11 +179,13 @@ function find(username) {
 function find_success(username) {
   const requestOptions = {
     method: "GET",
-    headers: { "Content-Type": "application/json" },
-    
+    headers: {  "Content-Type": "application/json" },
   };
 
-  return fetch("http://localhost:5000/api/auth/find/"+username, requestOptions)
+  return fetch(
+    "http://localhost:5000/api/auth/find/" + username,
+    requestOptions
+  )
     .then(handleResponse)
     .then((user) => {
       return user;
@@ -191,7 +193,6 @@ function find_success(username) {
 }
 
 function handleResponse(response) {
-
   return response.text().then((text) => {
     const data = text && JSON.parse(text);
     if (!response.ok) {

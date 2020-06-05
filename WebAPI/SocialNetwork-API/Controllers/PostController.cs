@@ -60,6 +60,8 @@ namespace SocialNetwork_API.Controllers
             //var currUserId = new ObjectId(User.Claims.ToList().FirstOrDefault(i => i.Type == "UserId").Value);
 
             var currUserPosts = _uow.Posts.Find(x => x.Username == username);
+            currUserPosts = currUserPosts.OrderByDescending(x => x.SharedTime);
+
             var postsToReturn = _mapper.Map<IEnumerable<PostDto>>(currUserPosts);
 
             return Ok(postsToReturn);

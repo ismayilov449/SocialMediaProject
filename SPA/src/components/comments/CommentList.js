@@ -17,10 +17,12 @@ class CommentList extends Component {
               style={{ backgroundColor: "#444", borderColor: "#888" }}
             >
               <Comment
+                inProfile={this.props.inProfile}
                 user={this.props.user}
                 comment={comment}
                 deleteComment={this.props.actions.deleteComment}
                 update={this.props.actions.getAll}
+                updateWithUser={this.props.actions.getUserPosts}
                 // like={this.props.actions.like}
                 // dislike={this.props.actions.dislike}
                 // editPost={this.props.actions.editPost}
@@ -42,6 +44,7 @@ function mapDispatchToProps(dispatch) {
     actions: {
       deleteComment: bindActionCreators(commentActions.deleteComment, dispatch),
       getAll: bindActionCreators(postActions.getAll, dispatch),
+      getUserPosts: bindActionCreators(postActions.getSpecPosts, dispatch),
     },
   };
 }

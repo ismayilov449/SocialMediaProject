@@ -18,6 +18,8 @@ using SocialNetwork_API.DAL;
 using SocialNetwork_API.DAL.Abstract;
 using SocialNetwork_API.DAL.Concrete.MongoDB;
 using SocialNetwork_API.Helpers;
+using Microsoft.AspNetCore.Authorization;
+using System.Net;
 
 namespace SocialNetwork_API
 {
@@ -47,6 +49,8 @@ namespace SocialNetwork_API
             services.AddScoped<ICommentRepository, CommentRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
+            services.AddAuthorization();
+
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -54,7 +58,7 @@ namespace SocialNetwork_API
 
             }).AddJwtBearer(opt =>
             {
-                
+
                 opt.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
                 {
                     //encrypttoken
@@ -77,10 +81,10 @@ namespace SocialNetwork_API
             {
                 opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
             });
-          
 
 
-          
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -90,6 +94,7 @@ namespace SocialNetwork_API
             {
                 app.UseDeveloperExceptionPage();
             }
+
             app.UseCors(x =>
             x.AllowAnyHeader()
             .AllowAnyMethod()
@@ -100,7 +105,6 @@ namespace SocialNetwork_API
             {
                 c.SwaggerEndpoint("v1/swagger.json", "API v1");
             });
-
             app.UseAuthentication();
             app.UseStaticFiles();
             app.UseMvc();
